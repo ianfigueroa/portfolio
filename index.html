@@ -9,14 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #09090b;
-            --card: #18181b;
-            --input-bg: #0f0f11;
-            --border: #27272a;
-            --text: #e4e4e7;
-            --text-muted: #a1a1aa;
-            --accent: #fff; 
-            --highlight: #6366f1; /* Indigo/Purple tint for the button */
+            --bg: #050505;
+            --card-bg: rgba(20, 20, 25, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --text: #ffffff;
+            --text-muted: #9ca3af;
+            --accent: #38bdf8; /* Electric Blue (Quant/Tech feel) */
+            --glow: rgba(56, 189, 248, 0.15);
         }
 
         * {
@@ -30,33 +30,46 @@
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
-            background-image: radial-gradient(#27272a 1px, transparent 1px);
-            background-size: 24px 24px;
             overflow-x: hidden;
+        }
+
+        /* CANVAS BACKGROUND */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Subtle fade at bottom to blend with footer */
+            mask-image: linear-gradient(to bottom, black 80%, transparent);
         }
 
         /* Container */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
+            position: relative;
+            z-index: 1;
         }
 
         /* Navigation */
         nav {
-            padding: 32px 0;
-            margin-bottom: 60px;
+            padding: 40px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 80px;
         }
 
-        /* UPDATED: Bigger Logo */
         .logo {
             font-weight: 800;
-            font-size: 32px; /* Increased from 18px */
+            font-size: 24px;
             letter-spacing: -1px;
-            color: white;
+            background: linear-gradient(to right, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-links {
@@ -68,236 +81,260 @@
             color: var(--text-muted);
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.2s;
+            font-weight: 500;
+            transition: color 0.3s;
         }
 
         .nav-links a:hover {
-            color: var(--text);
+            color: var(--accent);
         }
 
         /* Hero Section */
         .hero {
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
+            grid-template-columns: 1.4fr 1fr;
             gap: 60px;
             align-items: center;
-            margin-bottom: 120px;
+            min-height: 60vh;
+            margin-bottom: 100px;
+        }
+
+        .role-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .role-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
         }
 
         .hero h1 {
-            font-size: 64px;
+            font-size: 3.5rem; /* Slightly adjusted size for cleaner wrap */
             line-height: 1.1;
             font-weight: 800;
             letter-spacing: -2px;
             margin-bottom: 24px;
-            color: white;
+            background: linear-gradient(180deg, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
             color: var(--text-muted);
             font-size: 18px;
             margin-bottom: 32px;
-            max-width: 480px;
-        }
-
-        .role-tag {
-            display: inline-block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--highlight);
-            background: rgba(99, 102, 241, 0.1);
-            padding: 6px 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+            max-width: 500px;
         }
 
         .hero-buttons {
             display: flex;
             gap: 16px;
-            align-items: center;
         }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 14px 28px;
+            border-radius: 8px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .btn-primary {
             background: var(--text);
-            color: var(--bg);
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
 
         .btn-primary:hover {
-            background: white;
-            transform: translateY(-2px);
+            background: var(--accent);
+            box-shadow: 0 0 30px var(--glow);
         }
 
         .btn-secondary {
-            background: transparent;
+            background: rgba(255,255,255,0.05);
             color: var(--text);
             border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
             border-color: var(--text);
-            background: var(--card);
+            background: rgba(255,255,255,0.1);
         }
 
-        .social-icons {
-            display: flex;
-            gap: 20px;
-            margin-left: 20px;
-        }
-
-        .social-icons a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .social-icons a:hover {
-            color: var(--text);
-        }
-
-        /* Photo styling */
-        .photo-container {
+        /* Photo Styling - Glass Frame */
+        .photo-wrapper {
             position: relative;
+            display: flex;
+            justify-content: center;
         }
 
         .photo-frame {
             width: 320px;
             height: 400px;
-            background: var(--card);
+            border-radius: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 8px;
-            margin-left: auto;
-            transform: rotate(3deg);
-            transition: transform 0.3s ease;
-        }
-
-        .photo-frame:hover {
-            transform: rotate(0deg);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
         .photo-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 8px;
             object-position: center 20%;
-            filter: grayscale(20%);
+            border-radius: 12px;
+            filter: grayscale(20%) contrast(1.1);
+            transition: filter 0.5s;
         }
 
-        /* Section Styling */
-        .section-label {
+        .photo-frame:hover img {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .section-number {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: var(--accent);
+            font-size: 14px;
         }
 
-        /* Bento Grid (About & Skills) */
+        /* Bento Grid */
         .bento-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1.5fr 1fr;
             gap: 24px;
             margin-bottom: 120px;
         }
 
         .card {
-            background: var(--card);
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            transition: border-color 0.2s;
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
         }
 
         .card:hover {
-            border-color: #52525b;
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        .span-2 { grid-column: span 2; }
-        .span-3 { grid-column: span 3; }
-
         .card h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: white;
         }
 
         .card p {
             color: var(--text-muted);
             font-size: 15px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
-        .skill-container {
+        /* Tech Pills */
+        .tech-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .skill {
+        .tech-pill {
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            color: var(--text);
-            background: #27272a;
-            padding: 6px 10px;
-            border-radius: 4px;
-            border: 1px solid transparent;
-        }
-        
-        .skill:hover {
-            border-color: var(--text-muted);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: all 0.2s;
         }
 
-        /* UPDATED: Horizontal Scrolling Projects */
-        .projects-wrapper {
-            width: 100%;
-            overflow-x: auto; /* Allow scrolling */
-            padding-bottom: 20px; /* Space for scrollbar */
-            margin-bottom: 100px;
-            /* Hide scrollbar for cleaner look */
-            scrollbar-width: none; 
-            -ms-overflow-style: none;
-            scroll-behavior: smooth;
-        }
-        
-        .projects-wrapper::-webkit-scrollbar { 
-            display: none; 
+        .tech-pill:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--glow);
         }
 
-        .projects-track {
+        /* Projects - Horizontal Slider with Fade */
+        .projects-container {
+            position: relative;
+            margin-bottom: 120px;
+        }
+
+        .projects-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 100px;
+            background: linear-gradient(to right, transparent, var(--bg));
+            pointer-events: none;
+        }
+
+        .projects-scroll {
             display: flex;
-            gap: 24px;
-            width: max-content; /* Ensure container expands */
+            gap: 30px;
+            overflow-x: auto;
+            padding-bottom: 40px;
+            scrollbar-width: none;
         }
+        
+        .projects-scroll::-webkit-scrollbar { display: none; }
 
         .project-card {
-            /* Fixed width for scroll items */
-            width: 450px; 
-            background: var(--card);
+            min-width: 480px;
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            flex-shrink: 0; /* Prevent shrinking */
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px var(--glow);
         }
 
         .project-img {
-            height: 240px;
+            height: 260px;
             width: 100%;
+            overflow: hidden;
             border-bottom: 1px solid var(--border);
         }
 
@@ -305,55 +342,49 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s;
         }
 
-        .project-info {
+        .project-card:hover .project-img img {
+            transform: scale(1.05);
+        }
+
+        .project-content {
             padding: 32px;
         }
 
-        .project-tech {
+        .project-tech-stack {
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            color: var(--highlight);
+            color: var(--accent);
             margin-bottom: 12px;
+            letter-spacing: 0.5px;
         }
 
-        .project-info h3 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .project-info p {
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            font-size: 15px;
-        }
-
-        .link-text {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
+        .project-link {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-        }
-        
-        .link-text:hover {
-            text-decoration: underline;
+            margin-top: 20px;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            gap: 8px;
         }
 
-        /* UPDATED: Contact Form (Screenshot Style) */
-        .contact-container {
-            max-width: 700px;
+        .project-link:hover {
+            color: var(--accent);
+        }
+
+        /* Contact Form */
+        .contact-section {
+            max-width: 600px;
             margin: 0 auto 100px;
         }
 
         .contact-form {
-            background: var(--card);
+            background: var(--card-bg);
             padding: 40px;
-            border-radius: 16px;
+            border-radius: 20px;
             border: 1px solid var(--border);
         }
 
@@ -364,93 +395,76 @@
             margin-bottom: 20px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
         .form-group label {
-            font-size: 14px;
+            display: block;
+            font-size: 13px;
             font-weight: 500;
             color: var(--text-muted);
+            margin-bottom: 8px;
         }
 
-        .form-group input,
-        .form-group textarea {
-            background: var(--input-bg);
+        .form-input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
             border: 1px solid var(--border);
+            padding: 14px;
             border-radius: 8px;
-            padding: 14px 16px;
-            color: var(--text);
+            color: white;
             font-family: inherit;
-            font-size: 15px;
-            transition: border-color 0.2s;
+            transition: all 0.3s;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-input:focus {
             outline: none;
-            border-color: var(--highlight);
-        }
-
-        .form-group textarea {
-            height: 140px;
-            resize: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--glow);
         }
 
         .btn-submit {
             width: 100%;
             padding: 16px;
-            background: var(--highlight);
-            color: white;
+            background: var(--accent);
+            color: black;
+            font-weight: 700;
             border: none;
             border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
+            margin-top: 10px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.3s;
         }
 
         .btn-submit:hover {
             opacity: 0.9;
+            box-shadow: 0 0 20px var(--glow);
         }
 
-        /* Footer */
         footer {
-            border-top: 1px solid var(--border);
-            padding: 32px 0;
+            text-align: center;
             color: var(--text-muted);
             font-size: 14px;
-            display: flex;
-            justify-content: center; /* Centered now */
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
         }
 
-        /* Mobile */
-        @media (max-width: 768px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 40px;
-            }
-            .hero h1 { font-size: 40px; }
-            .hero p { margin: 0 auto 32px; }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero h1 { font-size: 3rem; }
+            .hero p { margin: 0 auto 30px; }
             .hero-buttons { justify-content: center; }
-            .photo-frame { margin: 0 auto; transform: rotate(0deg); width: 280px; height: 350px; }
-            
+            .photo-frame { margin: 0 auto; transform: rotate(0deg); width: 280px; height: 320px; }
             .bento-grid { grid-template-columns: 1fr; }
-            .span-2, .span-3 { grid-column: span 1; }
-            
-            .project-card { width: 300px; } /* Smaller cards on mobile */
+            .project-card { min-width: 320px; }
             .form-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Animated Particle Background -->
+    <canvas id="bg-canvas"></canvas>
+
     <nav class="container">
-        <!-- UPDATED: Bigger text -->
         <div class="logo">Ian Figueroa</div>
         <div class="nav-links">
             <a href="#about">About</a>
@@ -460,132 +474,126 @@
     </nav>
 
     <div class="container">
+        <!-- Hero -->
         <section class="hero">
-            <div>
-                <span class="role-tag">Software Developer</span>
-                <h1>Efficient Systems.<br>Real-Time Data.</h1>
-                <p>I build high-performance tools for quantitative finance and trading. Focused on speed, reliability, and cleaner code.</p>
+            <div class="hero-content">
+                <div class="role-pill">Software Developer</div>
+                <!-- CHANGED HEADLINE HERE -->
+                <h1>Building High-Performance<br>Trading Systems.</h1>
+                <p>I build quantitative tools and low-latency systems. Focused on speed, reliability, and cleaner code.</p>
                 <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">View Work</a>
-                    <a href="#contact" class="btn btn-secondary">Contact</a>
-                    <div class="social-icons">
-                        <a href="https://github.com/ianfigueroa" target="_blank">GH</a>
-                        <a href="https://www.linkedin.com/in/ian-figueroa1/" target="_blank">LI</a>
-                    </div>
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Contact Me</a>
                 </div>
             </div>
-            <div class="photo-container">
+            <div class="photo-wrapper">
                 <div class="photo-frame">
                     <img src="images/photo.jpg" alt="Ian Figueroa">
                 </div>
             </div>
         </section>
 
-        <span class="section-label" id="about">01 — About & Skills</span>
+        <!-- About & Technologies -->
+        <div class="section-header" id="about">
+            <h2 class="section-title">About & Technologies</h2>
+            <span class="section-number">01</span>
+        </div>
+
         <div class="bento-grid">
-            <div class="card span-2">
+            <!-- CHANGED TITLE HERE -->
+            <div class="card">
                 <h3>About Me</h3>
-                <p>I'm a Software Engineering student building systems that matter. Unlike typical web developers, I focus on the engine room: WebSocket streams, order book reconstruction, and financial modeling.</p>
-                <p style="margin-bottom:0">I don't just make it work; I make it efficient. Whether it's optimization in C++ or data visualization in Python.</p>
+                <p>I'm a Software Engineering student building systems that process data at scale. While others focus on the frontend pixels, I focus on the engine room: WebSocket streams, order book reconstruction, and financial modeling.</p>
+                <p style="margin-bottom: 0;">I optimize for latency and precision. Whether it's C++ for execution or Python for analysis, I build tools that don't just work—they perform.</p>
             </div>
+            <!-- CHANGED TITLE HERE -->
             <div class="card">
-                <h3>Core Stack</h3>
-                <div class="skill-container">
-                    <div class="skill">C++ 20</div>
-                    <div class="skill">Python</div>
-                    <div class="skill">TypeScript</div>
-                    <div class="skill">React</div>
-                    <div class="skill">SQL</div>
-                    <div class="skill">Docker</div>
+                <h3>Core Technologies</h3>
+                <p>The tools I use to build systems:</p>
+                <div class="tech-list">
+                    <div class="tech-pill">C++ 20</div>
+                    <div class="tech-pill">Python</div>
+                    <div class="tech-pill">TypeScript</div>
+                    <div class="tech-pill">React</div>
+                    <div class="tech-pill">WebSockets</div>
+                    <div class="tech-pill">Pandas</div>
+                    <div class="tech-pill">Docker</div>
+                    <div class="tech-pill">PostgreSQL</div>
+                    <div class="tech-pill">Linux</div>
+                    <div class="tech-pill">Git</div>
                 </div>
-            </div>
-            <div class="card">
-                <h3>Finance Tech</h3>
-                <div class="skill-container">
-                    <div class="skill">WebSockets</div>
-                    <div class="skill">Pandas</div>
-                    <div class="skill">NumPy</div>
-                    <div class="skill">Plotly</div>
-                    <div class="skill">Technical Analysis</div>
-                </div>
-            </div>
-            <div class="card span-2">
-                <img src="images/about.jpg" alt="Workspace" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; filter: grayscale(40%);">
             </div>
         </div>
 
-        <span class="section-label" id="projects">02 — Selected Projects</span>
-        
-        <!-- UPDATED: Horizontal Scroll Wrapper -->
-        <div class="projects-wrapper">
-            <div class="projects-track">
+        <!-- Projects -->
+        <div class="section-header" id="projects">
+            <h2 class="section-title">Selected Works</h2>
+            <span class="section-number">02</span>
+        </div>
+
+        <div class="projects-container">
+            <div class="projects-scroll">
                 
                 <!-- Project 1 -->
                 <div class="project-card">
                     <div class="project-img">
-                        <img src="images/tapeflow.png" alt="TapeFlow Interface">
+                        <img src="images/tapeflow.png" alt="TapeFlow">
                     </div>
-                    <div class="project-info">
-                        <div class="project-tech">C++ • TypeScript • React • WebSocket</div>
+                    <div class="project-content">
+                        <div class="project-tech-stack">C++ • TypeScript • React • WebSocket</div>
                         <h3>TapeFlow Terminal</h3>
-                        <p>A high-performance crypto trading terminal. It connects directly to Binance via WebSocket to visualize real-time order flow, detect spoofing patterns, and highlight "whale" activity in the market.</p>
-                        <a href="https://github.com/ianfigueroa/TapeFlow" target="_blank" class="link-text">View Source -></a>
+                        <p>A high-performance crypto trading terminal. It connects directly to Binance via WebSocket to visualize real-time order flow, detect spoofing patterns, and highlight "whale" activity.</p>
+                        <a href="https://github.com/ianfigueroa/TapeFlow" target="_blank" class="project-link">
+                            View Source <span>→</span>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Project 2 -->
                 <div class="project-card">
                     <div class="project-img">
-                        <img src="images/stock-analysis.jpg" alt="Stock Analysis Dashboard">
+                        <img src="images/stock-analysis.jpg" alt="Stock Analysis">
                     </div>
-                    <div class="project-info">
-                        <div class="project-tech">Python • Streamlit • Pandas • Black-Scholes</div>
+                    <div class="project-content">
+                        <div class="project-tech-stack">Python • Streamlit • Pandas • Black-Scholes</div>
                         <h3>Stock Analysis Dashboard</h3>
                         <p>A quantitative analysis tool that screens stocks and prices options. Features include real-time data fetching, technical indicator calculation, and a Black-Scholes model for visualizing Greeks.</p>
-                        <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="link-text">View Source -></a>
-                    </div>
-                </div>
-                
-                <!-- Placeholder Project 3 to show scrolling effect better -->
-                 <div class="project-card">
-                    <div class="project-img" style="background: #27272a; display:flex; align-items:center; justify-content:center; color: #555;">
-                        <img src="images/about.jpg" alt="Coming Soon">
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tech">C++ • Low Latency</div>
-                        <h3>Market Simulator (WIP)</h3>
-                        <p>An order matching engine simulation capable of processing 10k orders/second. Currently in development to test various HFT strategies against historical data.</p>
-                        <span class="link-text" style="color: #666; cursor: default;">Coming Soon</span>
+                        <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="project-link">
+                            View Source <span>→</span>
+                        </a>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <span class="section-label" id="contact">03 — Contact</span>
-        
-        <!-- UPDATED: Form Style from Screenshot -->
-        <div class="contact-container">
+        <!-- Contact -->
+        <div class="section-header" id="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <span class="section-number">03</span>
+        </div>
+
+        <div class="contact-section">
             <form class="contact-form" onsubmit="event.preventDefault();">
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" placeholder="Your name">
+                        <input type="text" class="form-input" placeholder="Your name">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" placeholder="your@email.com">
+                        <input type="email" class="form-input" placeholder="your@email.com">
                     </div>
                 </div>
                 
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 20px;">
                     <label>Subject</label>
-                    <input type="text" placeholder="What's this about?">
+                    <input type="text" class="form-input" placeholder="What's this about?">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 20px;">
                     <label>Message</label>
-                    <textarea placeholder="Your message..."></textarea>
+                    <textarea class="form-input" style="height: 150px; resize: none;" placeholder="Your message..."></textarea>
                 </div>
 
                 <button type="submit" class="btn-submit">Send Message</button>
@@ -593,11 +601,93 @@
         </div>
 
         <footer>
-            <!-- UPDATED: Removed Location -->
-            <div>© 2026 Ian Figueroa</div>
+            <p>© 2026 Ian Figueroa</p>
         </footer>
-
     </div>
 
+    <!-- Background Script -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        
+        // Settings
+        const particleCount = 60;
+        const connectionDistance = 150;
+        const mouseDistance = 200;
+
+        // Resize
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        // Init Particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation Loop
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+
+                // Connect particles
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${1 - dist / connectionDistance})`; // Blue accent lines
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
 </body>
 </html>
