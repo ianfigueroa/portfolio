@@ -50,7 +50,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.25; /* Subtle like Thavlik */
+            opacity: 0.25;
         }
 
         .container {
@@ -129,7 +129,7 @@
             color: var(--text);
         }
 
-        /* --- PROJECTS GRID (The Thavlik Look) --- */
+        /* --- PROJECTS GRID --- */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -185,19 +185,20 @@
             box-shadow: 0 0 10px rgba(45, 212, 191, 0.1);
         }
 
-        .pill-closed {
-            border-color: #fbbf24;
-            color: #fbbf24;
-            background: rgba(251, 191, 36, 0.05);
+        .pill-wip {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.05);
         }
 
         /* Image Area */
         .card-preview {
             width: 100%;
-            height: 180px; /* Short height like reference */
+            height: 180px;
             overflow: hidden;
             position: relative;
             background: #000;
+            border-bottom: 1px solid var(--border);
         }
 
         .card-preview img {
@@ -300,7 +301,7 @@
             .grid-2 { grid-template-columns: 1fr; }
             h1 { font-size: 1.8rem; }
             .hero-title-separator { display: none; }
-            h1 br { display: none; } /* Stack on mobile */
+            h1 br { display: none; }
             h1 span { display: block; margin-top: 8px; }
         }
     </style>
@@ -331,109 +332,112 @@
 
         <!-- Projects Grid -->
         <div class="section-header">
-            <h2 class="section-title">Execution & Analysis Systems</h2>
+            <h2 class="section-title">Selected Works</h2>
         </div>
 
         <div class="grid-2">
             
-            <!-- Project 1 -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">titan.cpp</span>
-                    <span class="status-pill pill-open">open source</span>
-                </div>
-                <div class="card-preview">
-                    <!-- Replace with screenshot of terminal/code -->
-                    <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?q=80&w=2560&auto=format&fit=crop" alt="Code">
-                </div>
-                <div class="card-body">
-                    <p class="card-desc">
-                        A low-latency order execution engine written in C++20. Features a lock-free ring buffer for order processing and direct market data parsing (ITCH/OUCH).
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">C++20</span>
-                        <span class="tech-tag">Boost.Asio</span>
-                        <span class="tech-tag">CMake</span>
-                        <span class="tech-tag">Linux</span>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn-view">View Source on GitHub</a>
-                </div>
-            </div>
-
-            <!-- Project 2 -->
+            <!-- Project 1: TapeFlow (Updated with REAL details) -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">TapeFlow</span>
-                    <span class="status-pill pill-closed">closed source</span>
-                </div>
-                <div class="card-preview">
-                    <!-- Replace with screenshot of charts -->
-                    <img src="https://images.unsplash.com/photo-1611974765270-ca1258634369?q=80&w=2664&auto=format&fit=crop" alt="Charts">
-                </div>
-                <div class="card-body">
-                    <p class="card-desc">
-                        Proprietary crypto terminal. Connects to Binance/Bybit via WebSockets to visualize real-time order flow imbalances and detect spoofing patterns.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">TypeScript</span>
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">WebSockets</span>
-                        <span class="tech-tag">Go</span>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn-view">Request Demo</a>
-                </div>
-            </div>
-
-            <!-- Project 3 -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">greeks-py</span>
                     <span class="status-pill pill-open">open source</span>
                 </div>
                 <div class="card-preview">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop" alt="Data">
+                    <!-- Replace with screenshot of your TapeFlow terminal -->
+                    <img src="images/tapeflow.png" alt="TapeFlow Terminal">
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        A vectorized options pricing library. Implements Black-Scholes and Heston models for real-time risk management and volatility surface mapping.
+                        A low-latency crypto trading terminal processing 500+ trades/sec via WebSockets. Features mutable ring buffers for O(1) updates, Canvas-based footprint charts, and real-time whale detection.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">React + Vite</span>
+                        <span class="tech-tag">TypeScript</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Canvas API</span>
+                        <span class="tech-tag">Zustand</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="https://github.com/ianfigueroa/TapeFlow" target="_blank" class="btn-view">View Source on GitHub</a>
+                </div>
+            </div>
+
+            <!-- Project 2: Stock Analysis (Updated with REAL details) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Quant Dashboard</span>
+                    <span class="status-pill pill-open">open source</span>
+                </div>
+                <div class="card-preview">
+                    <!-- Replace with screenshot of your dashboard -->
+                    <img src="images/stock-analysis.jpg" alt="Quant Dashboard">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">
+                        Interactive equity analysis tool featuring automated scoring algorithms and a Black-Scholes options calculator with real-time Greeks visualization and volatility heatmaps.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Python</span>
-                        <span class="tech-tag">NumPy</span>
+                        <span class="tech-tag">Streamlit</span>
+                        <span class="tech-tag">Black-Scholes</span>
                         <span class="tech-tag">Pandas</span>
-                        <span class="tech-tag">Jupyter</span>
+                        <span class="tech-tag">Plotly</span>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn-view">View Source on GitHub</a>
+                    <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="btn-view">View Source on GitHub</a>
                 </div>
             </div>
 
-             <!-- Project 4 -->
-             <div class="card">
+            <!-- Project 3: Titan (Concept/To Be Built) -->
+            <div class="card">
                 <div class="card-header">
-                    <span class="card-title">Arb-Bot</span>
-                    <span class="status-pill pill-open">open source</span>
+                    <span class="card-title">titan.cpp</span>
+                    <span class="status-pill pill-wip">in development</span>
                 </div>
                 <div class="card-preview">
-                    <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?q=80&w=2574&auto=format&fit=crop" alt="Network">
+                    <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?q=80&w=2560&auto=format&fit=crop" alt="C++ Code">
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        Triangular arbitrage bot for decentralized exchanges (DEX). Utilizes graph theory to find profitable paths across liquidity pools.
+                        High-performance order matching engine written in C++20. Designed for sub-microsecond latency using lock-free data structures and kernel-bypass networking.
                     </p>
                     <div class="tech-stack">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">Solidity</span>
-                        <span class="tech-tag">Ethers.js</span>
+                        <span class="tech-tag">C++ 20</span>
+                        <span class="tech-tag">Boost.Asio</span>
+                        <span class="tech-tag">CMake</span>
+                        <span class="tech-tag">Lock-free Queues</span>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn-view">View Source on GitHub</a>
+                    <a href="#" class="btn-view">View Architecture</a>
+                </div>
+            </div>
+
+             <!-- Project 4: Arb-Bot (Concept/To Be Built) -->
+             <div class="card">
+                <div class="card-header">
+                    <span class="card-title">MEV-Arb-Bot</span>
+                    <span class="status-pill pill-wip">research</span>
+                </div>
+                <div class="card-preview">
+                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2664&auto=format&fit=crop" alt="Blockchain">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">
+                        Triangular arbitrage searcher for EVM chains. Uses graph theory to identify liquidity cycles and executes atomicity via custom smart contracts.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">Ethers.rs</span>
+                        <span class="tech-tag">Solidity</span>
+                        <span class="tech-tag">Graph Theory</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn-view">View Strategy</a>
                 </div>
             </div>
         </div>
@@ -463,19 +467,18 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        // --- 2. Market Volatility Background (Thavlik-style Waves but Financial) ---
+        // --- 2. Market Volatility Background ---
         const canvas = document.getElementById('market-bg');
         const ctx = canvas.getContext('2d');
         
         let width, height;
         let lines = [];
         
-        // Configuration for the lines
         const config = {
             lineCount: 6,
             segmentWidth: 10,
-            amplitude: 20, // How much it spikes up/down
-            speed: 0.5,    // Scrolling speed
+            amplitude: 20,
+            speed: 0.5,
             color: '#2dd4bf'
         };
 
@@ -489,7 +492,6 @@
             constructor(yIndex) {
                 this.yBase = (height / (config.lineCount + 1)) * (yIndex + 1);
                 this.points = [];
-                // Fill screen with initial points
                 let x = 0;
                 while(x < width + 100) {
                     this.points.push({
@@ -501,18 +503,13 @@
             }
 
             update() {
-                // Move all points left
                 this.points.forEach(p => p.x -= config.speed);
-
-                // Remove points that went off screen
                 if (this.points[0].x < -config.segmentWidth) {
                     this.points.shift();
-                    
-                    // Add new point at the end
                     const lastX = this.points[this.points.length - 1].x;
                     this.points.push({
                         x: lastX + config.segmentWidth,
-                        y: this.yBase + (Math.random() - 0.5) * config.amplitude * (Math.random() > 0.8 ? 3 : 1) // Occasional volatility spike
+                        y: this.yBase + (Math.random() - 0.5) * config.amplitude * (Math.random() > 0.8 ? 3 : 1)
                     });
                 }
             }
@@ -520,12 +517,9 @@
             draw() {
                 ctx.beginPath();
                 ctx.moveTo(this.points[0].x, this.points[0].y);
-                
-                // Draw lines with "Step" look or "Jagged" look
                 for (let i = 1; i < this.points.length; i++) {
                     ctx.lineTo(this.points[i].x, this.points[i].y);
                 }
-
                 ctx.strokeStyle = config.color;
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
@@ -541,15 +535,11 @@
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            
             lines.forEach((line, i) => {
                 line.update();
-                
-                // Vary opacity based on line index for depth
                 ctx.globalAlpha = 0.15 + (i * 0.05); 
                 line.draw();
             });
-
             requestAnimationFrame(animate);
         }
 
