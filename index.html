@@ -9,17 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette */
             --bg: #050607;
-            --bg-secondary: #0d1117;
             --card-bg: #0b0d10;
             --border: #232830;
             --text: #e6edf3;
             --text-muted: #8b949e;
-            
             --accent: #2dd4bf; /* Teal */
-            --accent-dim: rgba(45, 212, 191, 0.1);
-            
             --font-main: 'JetBrains Mono', monospace;
             --font-body: 'IBM Plex Mono', monospace;
         }
@@ -35,20 +30,24 @@
             font-size: 15px;
         }
 
-        /* --- BACKGROUND --- */
+        /* --- THE FANCY BACKGROUND --- */
         canvas {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.15; /* Subtle background */
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            z-index: 0; /* Sits just above the base background */
             pointer-events: none;
         }
 
+        /* Content wrapper to sit ABOVE the canvas */
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 24px;
             position: relative;
-            z-index: 1;
+            z-index: 2; /* Content sits on top */
         }
 
         /* --- HERO --- */
@@ -65,7 +64,8 @@
             letter-spacing: -1.5px;
             margin-bottom: 24px;
             color: #fff;
-            text-shadow: 0 0 40px rgba(45, 212, 191, 0.2);
+            /* Text Glow */
+            text-shadow: 0 0 30px rgba(45, 212, 191, 0.3);
         }
 
         .hero-title-separator { color: var(--accent); padding: 0 10px; }
@@ -82,23 +82,14 @@
             font-family: var(--font-main);
             font-size: 14px;
             font-weight: 700;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
         }
-        
-        /* Copy Email Style in Hero */
-        .email-trigger {
-            cursor: pointer;
-            color: #d1d5db;
-            transition: color 0.2s;
-            position: relative;
-        }
-        .email-trigger:hover { color: var(--accent); }
-        .email-trigger:active { transform: scale(0.98); }
 
-        .cta-accent { color: var(--accent); opacity: 0.5; }
+        .cta-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .cta-links a:hover { color: var(--accent); }
 
         /* --- SECTIONS --- */
         .section-header {
@@ -120,7 +111,8 @@
         }
 
         .card {
-            background-color: var(--card-bg);
+            background-color: rgba(11, 13, 16, 0.8); /* Slight transparency for bg effect */
+            backdrop-filter: blur(5px);
             border: 1px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
@@ -130,7 +122,7 @@
         .card:hover {
             border-color: var(--accent);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px -10px rgba(45, 212, 191, 0.15);
         }
 
         .card-header {
@@ -150,14 +142,8 @@
             border: 1px solid; font-weight: 600; letter-spacing: 0.5px;
             text-transform: lowercase; font-family: var(--font-main);
         }
-        .pill-open {
-            border-color: #2dd4bf; color: #2dd4bf;
-            background: rgba(45, 212, 191, 0.05);
-        }
-        .pill-wip {
-            border-color: #a855f7; color: #a855f7;
-            background: rgba(168, 85, 247, 0.05);
-        }
+        .pill-open { border-color: #2dd4bf; color: #2dd4bf; background: rgba(45, 212, 191, 0.05); }
+        .pill-wip { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.05); }
 
         /* Images */
         .card-preview {
@@ -168,7 +154,7 @@
         }
         .card-preview img {
             width: 100%; height: 100%; object-fit: cover;
-            opacity: 0.7; transition: 0.4s;
+            opacity: 0.8; transition: 0.4s;
         }
         .card:hover .card-preview img { opacity: 1; transform: scale(1.03); }
 
@@ -177,31 +163,22 @@
 
         /* Color Coded Tech Tags */
         .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; }
-        
         .tech-tag {
-            font-size: 11px; 
-            padding: 4px 10px; 
-            border-radius: 4px; 
-            border: 1px solid;
-            font-family: var(--font-main);
-            font-weight: 500;
-            
-            /* Default fallback */
-            --tag-color: #8b949e; 
-            color: var(--tag-color);
+            font-size: 11px; padding: 4px 10px; border-radius: 4px; border: 1px solid;
+            font-family: var(--font-main); font-weight: 500;
+            color: var(--tag-color, #8b949e);
             border-color: rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.02);
             transition: all 0.2s;
         }
-
         .tech-tag:hover {
             border-color: var(--tag-color);
             background: color-mix(in srgb, var(--tag-color) 10%, transparent);
+            box-shadow: 0 0 10px color-mix(in srgb, var(--tag-color) 20%, transparent);
         }
 
         .card-footer {
-            padding: 16px 24px; border-top: 1px solid var(--border);
-            text-align: center;
+            padding: 16px 24px; border-top: 1px solid var(--border); text-align: center;
         }
         .btn-view {
             display: inline-block; font-family: var(--font-main);
@@ -212,83 +189,69 @@
         }
         .btn-view:hover { background: var(--accent-dim); border-color: var(--accent); }
 
-        /* --- CONTACT (Let's Talk) --- */
+        /* --- BOTTOM CONTACT SECTION --- */
         .contact-section {
             text-align: center;
-            margin: 100px 0 80px;
+            margin: 120px 0 100px;
             padding: 40px 0;
-        }
-
-        .contact-lead {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: var(--text);
-        }
-
-        /* Email Copy Component */
-        .email-copy-wrapper {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
             position: relative;
         }
 
-        .email-display {
+        .contact-heading {
+            font-family: var(--font-main);
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        /* Thavlik Style Email Interaction */
+        .email-wrapper {
+            display: inline-block;
+            position: relative;
+        }
+
+        .email-btn {
             font-family: var(--font-main);
             font-size: 1.1rem;
-            color: #d1d5db; /* Plain color initially */
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 12px 24px;
-            border-radius: 8px;
+            color: #fbbf24; /* Yellowish gold like Thavlik's email */
+            background: transparent;
+            border: none;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 10px 20px;
         }
 
-        .email-display:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(45, 212, 191, 0.1);
-        }
+        .email-btn .bracket { color: #8b949e; margin: 0 4px; }
+        .email-btn:hover { color: var(--accent); text-shadow: 0 0 15px rgba(45,212,191,0.4); }
 
-        .email-display:active {
-            transform: translateY(0);
-        }
-
-        /* Highlight parts of email */
-        .email-highlight { color: var(--accent); font-weight: 700; }
-
-        /* Copied Tooltip */
-        .copy-feedback {
+        .copy-tooltip {
             position: absolute;
-            bottom: -30px;
-            font-family: var(--font-main);
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--accent);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 4px;
             font-size: 12px;
-            color: var(--accent);
+            font-weight: 700;
+            font-family: var(--font-main);
             opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.3s;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .copy-feedback.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .copy-tooltip.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         footer {
             text-align: center; font-size: 12px; color: #444;
-            padding-bottom: 40px; font-family: var(--font-main);
+            padding: 40px 0; font-family: var(--font-main);
             border-top: 1px solid var(--border);
-            padding-top: 40px;
         }
 
         @media (max-width: 768px) {
             .grid-2 { grid-template-columns: 1fr; }
-            h1 { font-size: 1.8rem; }
+            h1 { font-size: 2rem; }
             .hero-title-separator { display: none; }
             h1 br { display: none; } h1 span { display: block; margin-top: 8px; }
         }
@@ -296,7 +259,7 @@
 </head>
 <body>
 
-    <!-- Background Canvas -->
+    <!-- THE QUANT BACKGROUND CANVAS -->
     <canvas id="quant-bg"></canvas>
 
     <div class="container">
@@ -313,7 +276,7 @@
             </p>
             
             <div class="cta-links">
-                <span>github: <a href="https://github.com/ianfigueroa" style="color:var(--text); text-decoration:none;">@ianfigueroa</a></span>
+                github: <a href="https://github.com/ianfigueroa">@ianfigueroa</a>
             </div>
         </header>
 
@@ -380,7 +343,8 @@
                     <span class="card-title">titan.cpp</span>
                     <span class="status-pill pill-wip">in development</span>
                 </div>
-                <div class="card-body">
+                <!-- Empty Body Style for WIP -->
+                <div class="card-body" style="display: flex; flex-direction: column; justify-content: center;">
                     <p class="card-desc">
                         High-performance order matching engine written in C++20. Designed for sub-microsecond latency using lock-free data structures (SPSC Queues) and kernel-bypass networking principles.
                     </p>
@@ -402,7 +366,8 @@
                     <span class="card-title">MEV-Arb-Bot</span>
                     <span class="status-pill pill-wip">research</span>
                 </div>
-                <div class="card-body">
+                <!-- Empty Body Style for WIP -->
+                <div class="card-body" style="display: flex; flex-direction: column; justify-content: center;">
                     <p class="card-desc">
                         Triangular arbitrage searcher for EVM chains. Uses graph theory (Bellman-Ford) to identify liquidity cycles across Uniswap V2 pools and simulates execution via Rust.
                     </p>
@@ -421,14 +386,13 @@
 
         <!-- CONTACT SECTION -->
         <div class="contact-section">
-            <h2 style="font-family: var(--font-main); margin-bottom: 20px;">Interested in Algo Trading or Low-level Systems?</h2>
-            <p style="color: var(--text-muted); margin-bottom: 30px;">Let's talk.</p>
+            <h2 class="contact-heading">Interested in Algo Trading or Low-level Systems? Let's talk.</h2>
             
-            <div class="email-copy-wrapper">
-                <div class="email-display" onclick="copyEmail()">
-                    <span class="email-highlight">ian</span> [at] <span class="email-highlight">protonmail</span> (dot) com
-                </div>
-                <span id="copy-feedback" class="copy-feedback">Copied to clipboard!</span>
+            <div class="email-wrapper">
+                <div class="copy-tooltip" id="tooltip">Copied!</div>
+                <button class="email-btn" onclick="copyEmail()">
+                    ian <span class="bracket">[at]</span> protonmail <span class="bracket">(dot)</span> com
+                </button>
             </div>
         </div>
 
@@ -448,120 +412,127 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        // --- 2. Copy Email to Clipboard ---
+        // --- 2. Copy Email Functionality ---
         function copyEmail() {
-            // The actual email to copy
-            const email = "ian@protonmail.com"; 
+            const email = "ian@protonmail.com";
+            const tooltip = document.getElementById('tooltip');
             
             navigator.clipboard.writeText(email).then(() => {
-                const feedback = document.getElementById('copy-feedback');
-                feedback.classList.add('visible');
-                
-                // Hide message after 2 seconds
+                tooltip.classList.add('show');
                 setTimeout(() => {
-                    feedback.classList.remove('visible');
+                    tooltip.classList.remove('show');
                 }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
             });
         }
 
-        // --- 3. Quant Style Moving Lines Background (Stacked Waves) ---
+        // --- 3. THE FANCIER BACKGROUND ENGINE ---
         const canvas = document.getElementById('quant-bg');
         const ctx = canvas.getContext('2d');
         
         let width, height;
-        let rows = [];
+        let lines = [];
+        const gap = 120; // Distance between horizontal lines
         
-        // Configuration
-        const config = {
-            rowCount: 8,       // Number of stacked lines
-            speed: 0.5,        // Scroll speed
-            segmentWidth: 5,   // Resolution of the line (lower = more detailed)
-            amplitude: 15,     // Height of spikes
-            color: '#2dd4bf'   // Teal
-        };
-
+        // Colors
+        const lineColor = '#2dd4bf'; // Teal
+        
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            initRows();
+            initLines();
         }
 
-        class SignalRow {
-            constructor(yIndex) {
-                // Calculate Y position to spread them out evenly
-                this.baseY = (height / (config.rowCount + 1)) * (yIndex + 1);
+        class QuantLine {
+            constructor(y) {
+                this.y = y;
                 this.points = [];
-                this.offset = Math.random() * 1000; // Random start for noise
+                this.speed = 0.5 + Math.random() * 0.5; // vary speed slightly
+                this.amplitude = 15;
                 
-                // Fill screen with points
-                for(let x = 0; x <= width + 50; x += config.segmentWidth) {
-                    this.points.push(this.generatePoint(x));
-                }
-            }
+                // Initialize points across the screen
+                let x = 0;
+                // Start with a base value
+                let val = 0;
+                while (x < width + 50) {
+                    // Random Walk Logic (Stock chart style)
+                    // Next point is based on previous point + random change
+                    let change = (Math.random() - 0.5) * 10;
+                    val += change;
+                    
+                    // Clamp the value so lines don't intersect too much
+                    if(val > this.amplitude) val = this.amplitude;
+                    if(val < -this.amplitude) val = -this.amplitude;
 
-            generatePoint(x) {
-                // Combine Sine waves + Random noise for that "Financial Data" look
-                // x * 0.0something controls frequency
-                const noise = Math.sin(x * 0.01 + this.offset) * Math.cos(x * 0.03 + this.offset);
-                const spike = (Math.random() - 0.5) * (Math.random() > 0.9 ? 2.5 : 1); // Occasional spikes
-                
-                return {
-                    x: x,
-                    y: this.baseY + (noise * config.amplitude) + (spike * config.amplitude * 0.5)
-                };
+                    this.points.push({ x: x, yOffset: val });
+                    x += 5; // Distance between points (resolution)
+                }
             }
 
             update() {
-                // Move all points left
+                // Shift all X values left
                 for (let i = 0; i < this.points.length; i++) {
-                    this.points[i].x -= config.speed;
+                    this.points[i].x -= this.speed;
                 }
 
                 // Remove off-screen points
-                if (this.points[0].x < -config.segmentWidth) {
+                if (this.points[0].x < -10) {
                     this.points.shift();
                     
-                    // Add new point at end
-                    const lastX = this.points[this.points.length - 1].x;
-                    this.offset += 0.05; // Shift noise pattern
-                    this.points.push(this.generatePoint(lastX + config.segmentWidth));
+                    // Generate new point at the end
+                    let lastPoint = this.points[this.points.length - 1];
+                    let change = (Math.random() - 0.5) * 10;
+                    let newVal = lastPoint.yOffset + change;
+                    
+                    // Keep within bounds
+                    if(newVal > this.amplitude) newVal = this.amplitude;
+                    if(newVal < -this.amplitude) newVal = -this.amplitude;
+                    
+                    this.points.push({ 
+                        x: lastPoint.x + 5, 
+                        yOffset: newVal 
+                    });
                 }
             }
 
-            draw() {
+            draw(index, total) {
                 ctx.beginPath();
-                ctx.moveTo(this.points[0].x, this.points[0].y);
+                
+                // We draw jagged lines (lineTo) not smooth curves (bezier) for financial look
+                ctx.moveTo(this.points[0].x, this.y + this.points[0].yOffset);
                 
                 for (let i = 1; i < this.points.length; i++) {
-                    ctx.lineTo(this.points[i].x, this.points[i].y);
+                    ctx.lineTo(this.points[i].x, this.y + this.points[i].yOffset);
                 }
 
-                ctx.strokeStyle = config.color;
-                ctx.lineWidth = 1.2;
+                // Opacity logic: Fade out top and bottom lines
+                // Middle lines are brighter
+                let distFromCenter = Math.abs(index - total/2);
+                let opacity = 0.4 - (distFromCenter * 0.08);
+                if(opacity < 0.05) opacity = 0.05;
+
+                ctx.strokeStyle = lineColor;
+                ctx.lineWidth = 1.5; // Thicker lines than before
+                ctx.globalAlpha = opacity;
                 ctx.stroke();
+                ctx.globalAlpha = 1.0; // Reset
             }
         }
 
-        function initRows() {
-            rows = [];
-            for (let i = 0; i < config.rowCount; i++) {
-                rows.push(new SignalRow(i));
+        function initLines() {
+            lines = [];
+            // Calculate how many lines fit
+            let totalLines = Math.floor(height / gap);
+            for (let i = 0; i < totalLines + 2; i++) {
+                lines.push(new QuantLine(i * gap));
             }
         }
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            
-            rows.forEach((row, index) => {
-                row.update();
-                // Fade out lines at top and bottom slightly
-                const opacity = 1 - Math.abs(index - config.rowCount/2) / (config.rowCount/1.5);
-                ctx.globalAlpha = Math.max(0.1, opacity * 0.5); 
-                row.draw();
+            lines.forEach((line, index) => {
+                line.update();
+                line.draw(index, lines.length);
             });
-
             requestAnimationFrame(animate);
         }
 
