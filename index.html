@@ -9,29 +9,22 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Thavlik-inspired Palette with Quant Tones */
             --bg: #050607;
             --bg-secondary: #0d1117;
-            --card-bg: #111418;
+            --card-bg: #0d1117;
             --border: #232830;
             --text: #e6edf3;
             --text-muted: #8b949e;
             
-            /* Quant Accents */
             --accent: #2dd4bf; /* Teal-400 */
             --accent-dim: rgba(45, 212, 191, 0.1);
-            --green-ticker: #4ade80;
-            --red-ticker: #f87171;
+            --wip: #a855f7;    /* Purple for WIP */
             
             --font-main: 'JetBrains Mono', monospace;
             --font-body: 'IBM Plex Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-body);
@@ -42,15 +35,11 @@
             font-size: 15px;
         }
 
-        /* --- MARKET DATA BACKGROUND --- */
+        /* --- BACKGROUND --- */
         canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.25;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.25;
         }
 
         .container {
@@ -61,7 +50,7 @@
             z-index: 1;
         }
 
-        /* --- HEADER / HERO --- */
+        /* --- HERO --- */
         header {
             padding-top: 120px;
             text-align: center;
@@ -75,13 +64,10 @@
             letter-spacing: -1px;
             margin-bottom: 24px;
             color: #fff;
-            text-shadow: 0 0 40px rgba(45, 212, 191, 0.1);
+            text-shadow: 0 0 40px rgba(45, 212, 191, 0.15);
         }
 
-        .hero-title-separator {
-            color: var(--accent);
-            padding: 0 10px;
-        }
+        .hero-title-separator { color: var(--accent); padding: 0 10px; }
 
         .bio-text {
             font-size: 16px;
@@ -96,37 +82,20 @@
             font-size: 14px;
             font-weight: 700;
         }
-
-        .cta-links a {
-            color: #d1d5db; /* Light gray */
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .cta-links a:hover {
-            color: var(--accent);
-        }
-
-        .cta-accent {
-            color: var(--accent);
-            margin: 0 8px;
-        }
+        .cta-links a { color: #d1d5db; text-decoration: none; transition: 0.2s; }
+        .cta-links a:hover { color: var(--accent); }
+        .cta-accent { color: var(--accent); margin: 0 8px; }
 
         /* --- SECTIONS --- */
         .section-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-            margin-top: 80px;
+            display: flex; align-items: center;
+            margin-bottom: 30px; margin-top: 80px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
         }
-
         .section-title {
             font-family: var(--font-main);
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text);
+            font-size: 18px; font-weight: 700; color: var(--text);
         }
 
         /* --- PROJECTS GRID --- */
@@ -142,10 +111,8 @@
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.2s, border-color 0.2s;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
-
         .card:hover {
             border-color: var(--accent);
             transform: translateY(-2px);
@@ -153,156 +120,101 @@
 
         .card-header {
             padding: 20px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border);
             background: rgba(255,255,255,0.01);
         }
-
         .card-title {
             font-family: var(--font-main);
-            font-weight: 700;
-            font-size: 16px;
-            color: #fff;
+            font-weight: 700; font-size: 16px; color: #fff;
         }
 
-        /* The Status Pill */
+        /* Status Pills */
         .status-pill {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            border: 1px solid;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            font-size: 11px; padding: 4px 10px; border-radius: 20px;
+            border: 1px solid; font-weight: 500; letter-spacing: 0.5px;
             text-transform: lowercase;
         }
-
         .pill-open {
-            border-color: var(--accent);
-            color: var(--accent);
+            border-color: var(--accent); color: var(--accent);
             background: rgba(45, 212, 191, 0.05);
             box-shadow: 0 0 10px rgba(45, 212, 191, 0.1);
         }
-
         .pill-wip {
-            border-color: #8b5cf6;
-            color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.05);
+            border-color: var(--wip); color: var(--wip);
+            background: rgba(168, 85, 247, 0.05);
         }
 
-        /* Image Area */
+        /* Image Handling */
         .card-preview {
-            width: 100%;
-            height: 180px;
-            overflow: hidden;
-            position: relative;
-            background: #000;
+            width: 100%; height: 200px;
+            overflow: hidden; position: relative;
             border-bottom: 1px solid var(--border);
+            background: #000;
         }
-
         .card-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.8;
-            transition: opacity 0.3s, transform 0.5s;
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0.8; transition: 0.3s;
         }
+        .card:hover .card-preview img { opacity: 1; transform: scale(1.02); }
 
-        .card:hover .card-preview img {
-            opacity: 1;
-            transform: scale(1.05);
-        }
+        .card-body { padding: 24px; flex-grow: 1; }
+        .card-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
 
-        .card-body {
-            padding: 24px;
-            flex-grow: 1;
-        }
-
-        .card-desc {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
+        /* Tech Tags */
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; }
         .tech-tag {
-            font-size: 11px;
-            background: #1c2128;
-            color: #a3aab3;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid #30363d;
+            font-size: 11px; background: #161b22; color: #a3aab3;
+            padding: 4px 8px; border-radius: 4px; border: 1px solid #30363d;
         }
 
         .card-footer {
-            padding: 16px 24px;
-            border-top: 1px solid var(--border);
+            padding: 16px 24px; border-top: 1px solid var(--border);
             text-align: center;
         }
-
         .btn-view {
-            display: inline-block;
-            font-family: var(--font-main);
-            font-size: 13px;
-            color: var(--accent);
-            text-decoration: none;
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background: rgba(255,255,255,0.02);
-            transition: all 0.2s;
-            width: 100%;
+            display: inline-block; font-family: var(--font-main);
+            font-size: 13px; color: var(--accent); text-decoration: none;
+            padding: 8px 16px; border: 1px solid var(--border);
+            border-radius: 6px; background: rgba(255,255,255,0.02);
+            transition: all 0.2s; width: 100%;
         }
+        .btn-view:hover { background: var(--accent-dim); border-color: var(--accent); }
 
-        .btn-view:hover {
-            background: var(--accent-dim);
-            border-color: var(--accent);
-        }
-
-        /* --- CONTACT --- */
+        /* --- CONTACT FORM --- */
         .contact-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 40px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 80px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 40px; border-radius: 12px; max-width: 600px; margin: 0 auto 80px;
         }
-
-        .email-link {
-            font-family: var(--font-main);
-            font-size: 18px;
-            color: var(--text);
-            text-decoration: none;
-            border-bottom: 1px dashed var(--accent);
-            padding-bottom: 2px;
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-label {
+            display: block; font-size: 12px; color: var(--text-muted);
+            margin-bottom: 8px; font-family: var(--font-main);
         }
-        
-        .email-link:hover {
-            color: var(--accent);
-            border-bottom-style: solid;
+        .form-input {
+            width: 100%; background: #050607; border: 1px solid var(--border);
+            color: var(--text); padding: 12px; border-radius: 6px;
+            font-family: var(--font-body); font-size: 14px;
         }
+        .form-input:focus { outline: none; border-color: var(--accent); }
+        .btn-submit {
+            width: 100%; background: var(--accent); color: #000;
+            border: none; padding: 12px; border-radius: 6px;
+            font-family: var(--font-main); font-weight: 700; cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-submit:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-dim); }
 
         footer {
-            text-align: center;
-            font-size: 12px;
-            color: #444;
-            padding-bottom: 40px;
-            font-family: var(--font-main);
+            text-align: center; font-size: 12px; color: #444;
+            padding-bottom: 40px; font-family: var(--font-main);
         }
 
         @media (max-width: 768px) {
             .grid-2 { grid-template-columns: 1fr; }
             h1 { font-size: 1.8rem; }
             .hero-title-separator { display: none; }
-            h1 br { display: none; }
-            h1 span { display: block; margin-top: 8px; }
+            h1 br { display: none; } h1 span { display: block; margin-top: 8px; }
         }
     </style>
 </head>
@@ -320,7 +232,7 @@
             <p class="bio-text">
                 I combine financial theory with low-latency engineering.
                 <br>
-                Building HFT systems, distributed execution engines, and alpha-generating tools using C++ and Python.
+                Building order execution engines, arbitrage strategies, and alpha-generating tools using C++ and Python.
             </p>
             
             <div class="cta-links">
@@ -337,26 +249,25 @@
 
         <div class="grid-2">
             
-            <!-- Project 1: TapeFlow (Updated with REAL details) -->
+            <!-- Project 1: TapeFlow -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">TapeFlow</span>
                     <span class="status-pill pill-open">open source</span>
                 </div>
                 <div class="card-preview">
-                    <!-- Replace with screenshot of your TapeFlow terminal -->
-                    <img src="images/tapeflow.png" alt="TapeFlow Terminal">
+                    <!-- Placeholder: Replace src with your actual screenshot when ready -->
+                    <img src="https://via.placeholder.com/600x400/161b22/2dd4bf?text=TapeFlow+Terminal" alt="TapeFlow Terminal">
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        A low-latency crypto trading terminal processing 500+ trades/sec via WebSockets. Features mutable ring buffers for O(1) updates, Canvas-based footprint charts, and real-time whale detection.
+                        A low-latency crypto trading terminal processing 500+ trades/sec. Features mutable ring buffers for O(1) state updates, Canvas-based footprint charts, and algorithmic whale detection.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">React + Vite</span>
                         <span class="tech-tag">TypeScript</span>
-                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">WebSockets</span>
                         <span class="tech-tag">Canvas API</span>
-                        <span class="tech-tag">Zustand</span>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -364,25 +275,24 @@
                 </div>
             </div>
 
-            <!-- Project 2: Stock Analysis (Updated with REAL details) -->
+            <!-- Project 2: Stock Analysis (Updated Description) -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">Quant Dashboard</span>
+                    <span class="card-title">Options & Tech Analysis</span>
                     <span class="status-pill pill-open">open source</span>
                 </div>
                 <div class="card-preview">
-                    <!-- Replace with screenshot of your dashboard -->
-                    <img src="images/stock-analysis.jpg" alt="Quant Dashboard">
+                    <!-- Placeholder: Replace src with your actual screenshot when ready -->
+                    <img src="https://via.placeholder.com/600x400/161b22/2dd4bf?text=Analysis+Dashboard" alt="Quant Dashboard">
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        Interactive equity analysis tool featuring automated scoring algorithms and a Black-Scholes options calculator with real-time Greeks visualization and volatility heatmaps.
+                        Interactive financial dashboard featuring a Black-Scholes pricing engine with Greek sensitivities and heatmaps. Includes an automated technical analysis bot (RSI, MACD, MA) for scoring equities.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Python</span>
                         <span class="tech-tag">Streamlit</span>
                         <span class="tech-tag">Black-Scholes</span>
-                        <span class="tech-tag">Pandas</span>
                         <span class="tech-tag">Plotly</span>
                     </div>
                 </div>
@@ -391,18 +301,16 @@
                 </div>
             </div>
 
-            <!-- Project 3: Titan (Concept/To Be Built) -->
+            <!-- Project 3: Titan (No Image, WIP) -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">titan.cpp</span>
                     <span class="status-pill pill-wip">in development</span>
                 </div>
-                <div class="card-preview">
-                    <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?q=80&w=2560&auto=format&fit=crop" alt="C++ Code">
-                </div>
+                <!-- Removed card-preview div for cleaner look -->
                 <div class="card-body">
                     <p class="card-desc">
-                        High-performance order matching engine written in C++20. Designed for sub-microsecond latency using lock-free data structures and kernel-bypass networking.
+                        High-performance order matching engine written in C++20. Designed for sub-microsecond latency using lock-free data structures (SPSC Queues) and kernel-bypass networking principles.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">C++ 20</span>
@@ -412,22 +320,20 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn-view">View Architecture</a>
+                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Architecture Coming Soon</span>
                 </div>
             </div>
 
-             <!-- Project 4: Arb-Bot (Concept/To Be Built) -->
+             <!-- Project 4: Arb-Bot (No Image, WIP) -->
              <div class="card">
                 <div class="card-header">
                     <span class="card-title">MEV-Arb-Bot</span>
                     <span class="status-pill pill-wip">research</span>
                 </div>
-                <div class="card-preview">
-                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2664&auto=format&fit=crop" alt="Blockchain">
-                </div>
+                <!-- Removed card-preview div for cleaner look -->
                 <div class="card-body">
                     <p class="card-desc">
-                        Triangular arbitrage searcher for EVM chains. Uses graph theory to identify liquidity cycles and executes atomicity via custom smart contracts.
+                        Triangular arbitrage searcher for EVM chains. Uses graph theory (Bellman-Ford) to identify liquidity cycles across Uniswap V2 pools and simulates execution via Rust.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Rust</span>
@@ -437,18 +343,35 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn-view">View Strategy</a>
+                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Research Phase</span>
                 </div>
             </div>
         </div>
 
         <div class="section-header">
-            <h2 class="section-title">Lets Talk</h2>
+            <h2 class="section-title">Get In Touch</h2>
         </div>
 
+        <!-- Contact Form using Formspree -->
         <div class="contact-box">
-            <p style="margin-bottom: 20px; color: var(--text-muted);">Interested in High Frequency Trading infrastructure or Quant Research?</p>
-            <a href="mailto:ian@example.com" class="email-link">ian [at] protonmail (dot) com</a>
+            <!-- 
+                IMPORTANT: Go to https://formspree.io/
+                1. Sign up (free).
+                2. Create a new form.
+                3. Paste the provided URL into the 'action' attribute below.
+                Example: action="https://formspree.io/f/xvazzqrl"
+            -->
+            <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST">
+                <div class="form-group">
+                    <label class="form-label">Your Email</label>
+                    <input type="email" name="email" class="form-input" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea name="message" class="form-input" rows="4" placeholder="Let's build something..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
         </div>
 
         <footer>
@@ -458,7 +381,7 @@
     </div>
 
     <script>
-        // --- 1. Real-time Clock (Quant style) ---
+        // --- 1. Real-time Clock ---
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-US', { hour12: false });
