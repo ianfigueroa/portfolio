@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ian Figueroa | Quant Dev</title>
+    <title>Ian Figueroa | Quant Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050607;
-            --card-bg: #0b0d10;
-            --border: #232830;
-            --text: #e6edf3;
-            --text-muted: #8b949e;
-            --accent: #2dd4bf; /* Teal */
+            /* Theme Colors */
+            --bg: #010203; 
+            --card-bg: rgba(10, 14, 18, 0.85);
+            --border: #1e293b;
+            --text: #ffffff;
+            --text-muted: #94a3b8;
+            
+            /* Quant Accents */
+            --accent: #2dd4bf;
+            --accent-glow: #2dd4bf; 
+            
             --font-main: 'JetBrains Mono', monospace;
             --font-body: 'IBM Plex Mono', monospace;
         }
@@ -28,274 +33,285 @@
             line-height: 1.6;
             overflow-x: hidden;
             font-size: 15px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- THE FANCY BACKGROUND --- */
+        /* --- BACKGROUND ENGINE --- */
         canvas {
             position: fixed;
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            z-index: 0; /* Sits just above the base background */
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 40%, #000000 120%);
+            z-index: 1;
             pointer-events: none;
         }
 
-        /* Content wrapper to sit ABOVE the canvas */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
             position: relative;
-            z-index: 2; /* Content sits on top */
+            z-index: 2;
+            flex: 1;
         }
 
-        /* --- HERO --- */
+        /* --- HERO SECTION --- */
         header {
             padding-top: 140px;
             text-align: center;
             margin-bottom: 120px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         h1 {
             font-family: var(--font-main);
             font-weight: 800;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            letter-spacing: -1.5px;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            letter-spacing: -2px;
             margin-bottom: 24px;
             color: #fff;
-            /* Text Glow */
-            text-shadow: 0 0 30px rgba(45, 212, 191, 0.3);
+            text-shadow: none;
+            text-align: center;
         }
 
-        .hero-title-separator { color: var(--accent); padding: 0 10px; }
+        .hero-title-separator { 
+            color: var(--accent); 
+            opacity: 0.8; 
+            padding: 0 15px; 
+        }
 
         .bio-text {
-            font-size: 16px;
+            font-size: 1.1rem;
             color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 32px auto;
+            max-width: 750px;
+            margin: 0 auto 40px auto;
             line-height: 1.8;
         }
 
-        .cta-links {
+        .contact-block {
             font-family: var(--font-main);
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
         }
-
-        .cta-links a {
-            color: var(--text);
+        .contact-item { display: flex; align-items: center; gap: 8px; }
+        .contact-label { color: var(--text-muted); }
+        .contact-link {
+            color: #fbbf24;
             text-decoration: none;
-            transition: color 0.2s;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .cta-links a:hover { color: var(--accent); }
-
-        /* --- SECTIONS --- */
-        .section-header {
-            display: flex; align-items: center;
-            margin-bottom: 30px; margin-top: 100px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
+        .contact-link:hover { color: var(--accent); }
+        .bracket { color: var(--text-muted); opacity: 0.7; }
+        #copy-msg {
+            position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%) translateY(-50px);
+            background: var(--accent); color: #000;
+            padding: 8px 16px; border-radius: 4px;
+            font-weight: 700; font-family: var(--font-main);
+            font-size: 12px; transition: transform 0.3s ease;
+            z-index: 100; box-shadow: 0 0 20px var(--accent);
         }
-        .section-title {
-            font-family: var(--font-main);
-            font-size: 18px; font-weight: 700; color: var(--text);
-        }
+        #copy-msg.visible { transform: translateX(-50%) translateY(0); }
 
         /* --- PROJECTS GRID --- */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 30px;
+            margin-bottom: 120px;
         }
 
         .card {
-            background-color: rgba(11, 13, 16, 0.8); /* Slight transparency for bg effect */
-            backdrop-filter: blur(5px);
+            background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s;
-            display: flex; flex-direction: column;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
+
         .card:hover {
             border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px -10px rgba(45, 212, 191, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(45, 212, 191, 0.2);
         }
 
         .card-header {
-            padding: 16px 24px;
+            padding: 18px 24px;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border);
-            background: rgba(255,255,255,0.01);
-        }
-        .card-title {
-            font-family: var(--font-main);
-            font-weight: 700; font-size: 15px; color: #fff;
+            background: rgba(255,255,255,0.02);
         }
 
-        /* Status Pills */
+        .card-title { font-family: var(--font-main); font-weight: 700; font-size: 15px; color: #fff; }
+
         .status-pill {
-            font-size: 10px; padding: 4px 10px; border-radius: 20px;
+            font-size: 11px; padding: 4px 12px; border-radius: 20px;
             border: 1px solid; font-weight: 600; letter-spacing: 0.5px;
-            text-transform: lowercase; font-family: var(--font-main);
+            font-family: var(--font-main); text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .pill-open { border-color: #2dd4bf; color: #2dd4bf; background: rgba(45, 212, 191, 0.05); }
-        .pill-wip { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.05); }
+        .pill-open { 
+            border-color: #2dd4bf; 
+            color: #2dd4bf; 
+            background: rgba(45, 212, 191, 0.1); 
+        }
+        .pill-open:hover {
+            background: rgba(45, 212, 191, 0.2);
+            box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
+        }
+        .pill-wip { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.1); }
 
-        /* Images */
+        /* Clickable Image */
         .card-preview {
-            width: 100%; height: 180px;
-            overflow: hidden; position: relative;
+            display: block;
+            aspect-ratio: 16 / 9;
+            overflow: hidden; 
+            position: relative;
             border-bottom: 1px solid var(--border);
-            background: #050607;
+            background: #000;
         }
         .card-preview img {
             width: 100%; height: 100%; object-fit: cover;
-            opacity: 0.8; transition: 0.4s;
+            opacity: 0.7; transition: 0.5s;
         }
-        .card:hover .card-preview img { opacity: 1; transform: scale(1.03); }
+        .card:hover .card-preview img { opacity: 1; transform: scale(1.05); }
 
-        .card-body { padding: 24px; flex-grow: 1; }
-        .card-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
-
-        /* Color Coded Tech Tags */
-        .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+        .card-body { 
+            padding: 28px; 
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .card-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.7; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
         .tech-tag {
-            font-size: 11px; padding: 4px 10px; border-radius: 4px; border: 1px solid;
+            font-size: 11px; padding: 5px 10px; border-radius: 4px; border: 1px solid;
             font-family: var(--font-main); font-weight: 500;
-            color: var(--tag-color, #8b949e);
-            border-color: rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.02);
-            transition: all 0.2s;
+            color: var(--tag-color); border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            transition: 0.2s;
         }
         .tech-tag:hover {
             border-color: var(--tag-color);
-            background: color-mix(in srgb, var(--tag-color) 10%, transparent);
+            background: color-mix(in srgb, var(--tag-color) 15%, transparent);
             box-shadow: 0 0 10px color-mix(in srgb, var(--tag-color) 20%, transparent);
         }
 
-        .card-footer {
-            padding: 16px 24px; border-top: 1px solid var(--border); text-align: center;
-        }
         .btn-view {
-            display: inline-block; font-family: var(--font-main);
+            margin-top: auto;
+            display: block; font-family: var(--font-main);
             font-size: 13px; color: var(--accent); text-decoration: none;
-            padding: 8px 16px; border: 1px solid var(--border);
+            padding: 10px 20px; border: 1px solid var(--border);
             border-radius: 6px; background: rgba(255,255,255,0.02);
-            transition: all 0.2s; width: 100%;
-        }
-        .btn-view:hover { background: var(--accent-dim); border-color: var(--accent); }
-
-        /* --- BOTTOM CONTACT SECTION --- */
-        .contact-section {
-            text-align: center;
-            margin: 120px 0 100px;
-            padding: 40px 0;
-            position: relative;
-        }
-
-        .contact-heading {
-            font-family: var(--font-main);
-            font-size: 1.25rem;
-            color: #fff;
-            margin-bottom: 30px;
-            font-weight: 500;
-        }
-
-        /* Thavlik Style Email Interaction */
-        .email-wrapper {
-            display: inline-block;
-            position: relative;
-        }
-
-        .email-btn {
-            font-family: var(--font-main);
-            font-size: 1.1rem;
-            color: #fbbf24; /* Yellowish gold like Thavlik's email */
-            background: transparent;
-            border: none;
-            cursor: pointer;
             transition: all 0.2s;
-            padding: 10px 20px;
+            text-align: center;
+        }
+        .btn-view:hover { 
+            background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700;
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
         }
 
-        .email-btn .bracket { color: #8b949e; margin: 0 4px; }
-        .email-btn:hover { color: var(--accent); text-shadow: 0 0 15px rgba(45,212,191,0.4); }
-
-        .copy-tooltip {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            background: var(--accent);
-            color: #000;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            font-family: var(--font-main);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .copy-tooltip.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
+        /* --- FOOTER --- */
         footer {
-            text-align: center; font-size: 12px; color: #444;
-            padding: 40px 0; font-family: var(--font-main);
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--border); padding: 40px 0;
+            font-family: var(--font-main); font-size: 13px;
+            color: var(--text-muted); background: #010101; z-index: 10;
         }
+        .footer-content {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1100px; margin: 0 auto; padding: 0 24px;
+        }
+        .footer-links a { 
+            color: #fff; 
+            text-decoration: none; 
+            margin: 0 10px; 
+            transition: 0.2s;
+            border-bottom: 1px solid transparent;
+        }
+        .footer-links a:hover { 
+            color: var(--accent); 
+            border-bottom: 1px solid var(--accent);
+        }
+        .back-to-top { color: var(--accent); cursor: pointer; text-decoration: none; border-bottom: 1px dashed var(--accent); }
+        .back-to-top:hover { border-bottom-style: solid; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 800px) {
             .grid-2 { grid-template-columns: 1fr; }
+            .footer-content { flex-direction: column; gap: 20px; text-align: center; }
+            .contact-block { flex-direction: column; gap: 10px; }
             h1 { font-size: 2rem; }
-            .hero-title-separator { display: none; }
-            h1 br { display: none; } h1 span { display: block; margin-top: 8px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- THE QUANT BACKGROUND CANVAS -->
-    <canvas id="quant-bg"></canvas>
+    <div id="copy-msg">Copied to clipboard!</div>
+    
+    <canvas id="candlestick-bg"></canvas>
+    <div class="vignette"></div>
 
     <div class="container">
         
         <!-- Hero Section -->
         <header>
             <h1>
-                Quant Developer <span class="hero-title-separator">|</span> Algo Trader
+                Software Engineer <span class="hero-title-separator">|</span> Quant Dev
             </h1>
+            
             <p class="bio-text">
-                I combine financial theory with low-latency engineering.
-                <br>
-                Building order execution engines, arbitrage strategies, and alpha-generating tools using C++ and Python.
+                Specializing in <strong>Market Microstructure</strong> and <strong>Low-Latency Systems</strong>. I engineer high-throughput trading infrastructure and arbitrage strategies using C++20 and Python.
             </p>
             
-            <div class="cta-links">
-                github: <a href="https://github.com/ianfigueroa">@ianfigueroa</a>
+            <div class="contact-block">
+                <div class="contact-item">
+                    <span class="contact-label">github:</span>
+                    <a href="https://github.com/ianfigueroa" target="_blank" class="contact-link">@ianfigueroa</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-label">email:</span>
+                    <span class="contact-link" onclick="copyEmail()">
+                        ian.figueroa6 <span class="bracket">[at]</span> upr <span class="bracket">(dot)</span> edu
+                    </span>
+                </div>
             </div>
         </header>
 
         <!-- Projects Grid -->
-        <div class="section-header">
-            <h2 class="section-title">Selected Works</h2>
-        </div>
-
         <div class="grid-2">
             
             <!-- Project 1: TapeFlow -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">TapeFlow</span>
-                    <span class="status-pill pill-open">open source</span>
+                    <a href="https://github.com/ianfigueroa/TapeFlow" target="_blank" style="text-decoration: none;">
+                        <span class="status-pill pill-open">open source</span>
+                    </a>
                 </div>
-                <div class="card-preview">
-                    <img src="https://via.placeholder.com/600x400/0b0d10/2dd4bf?text=TapeFlow+Terminal" alt="TapeFlow Terminal">
-                </div>
+                <a href="https://github.com/ianfigueroa/TapeFlow" target="_blank" class="card-preview">
+                    <img src="images/tapeflow_v2.png" alt="TapeFlow Terminal">
+                </a>
                 <div class="card-body">
                     <p class="card-desc">
                         A low-latency crypto trading terminal processing 500+ trades/sec. Features mutable ring buffers for O(1) state updates, Canvas-based footprint charts, and algorithmic whale detection.
@@ -306,8 +322,6 @@
                         <span class="tech-tag" style="--tag-color: #a8b9cc;">WebSockets</span>
                         <span class="tech-tag" style="--tag-color: #f59e0b;">Vite</span>
                     </div>
-                </div>
-                <div class="card-footer">
                     <a href="https://github.com/ianfigueroa/TapeFlow" target="_blank" class="btn-view">View Source on GitHub</a>
                 </div>
             </div>
@@ -316,11 +330,13 @@
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">Quant Dashboard</span>
-                    <span class="status-pill pill-open">open source</span>
+                    <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" style="text-decoration: none;">
+                        <span class="status-pill pill-open">open source</span>
+                    </a>
                 </div>
-                <div class="card-preview">
-                    <img src="https://via.placeholder.com/600x400/0b0d10/2dd4bf?text=Analysis+Dashboard" alt="Quant Dashboard">
-                </div>
+                <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="card-preview">
+                    <img src="images/stock-analysis.png" alt="Quant Dashboard">
+                </a>
                 <div class="card-body">
                     <p class="card-desc">
                         Interactive financial dashboard featuring a Black-Scholes pricing engine with Greek sensitivities and heatmaps. Includes an automated technical analysis bot for scoring equities.
@@ -331,8 +347,6 @@
                         <span class="tech-tag" style="--tag-color: #1f6fbf;">Pandas</span>
                         <span class="tech-tag" style="--tag-color: #8865c6;">Black-Scholes</span>
                     </div>
-                </div>
-                <div class="card-footer">
                     <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="btn-view">View Source on GitHub</a>
                 </div>
             </div>
@@ -343,8 +357,7 @@
                     <span class="card-title">titan.cpp</span>
                     <span class="status-pill pill-wip">in development</span>
                 </div>
-                <!-- Empty Body Style for WIP -->
-                <div class="card-body" style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="card-body">
                     <p class="card-desc">
                         High-performance order matching engine written in C++20. Designed for sub-microsecond latency using lock-free data structures (SPSC Queues) and kernel-bypass networking principles.
                     </p>
@@ -354,8 +367,6 @@
                         <span class="tech-tag" style="--tag-color: #4ade80;">CMake</span>
                         <span class="tech-tag" style="--tag-color: #94a3b8;">Linux</span>
                     </div>
-                </div>
-                <div class="card-footer">
                     <span class="btn-view" style="opacity: 0.5; cursor: default;">Architecture Coming Soon</span>
                 </div>
             </div>
@@ -366,8 +377,7 @@
                     <span class="card-title">MEV-Arb-Bot</span>
                     <span class="status-pill pill-wip">research</span>
                 </div>
-                <!-- Empty Body Style for WIP -->
-                <div class="card-body" style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="card-body">
                     <p class="card-desc">
                         Triangular arbitrage searcher for EVM chains. Uses graph theory (Bellman-Ford) to identify liquidity cycles across Uniswap V2 pools and simulates execution via Rust.
                     </p>
@@ -377,168 +387,152 @@
                         <span class="tech-tag" style="--tag-color: #3b82f6;">Ethers.rs</span>
                         <span class="tech-tag" style="--tag-color: #fca5a5;">Graph Theory</span>
                     </div>
-                </div>
-                <div class="card-footer">
                     <span class="btn-view" style="opacity: 0.5; cursor: default;">Research Phase</span>
                 </div>
             </div>
         </div>
 
-        <!-- CONTACT SECTION -->
-        <div class="contact-section">
-            <h2 class="contact-heading">Interested in Algo Trading or Low-level Systems? Let's talk.</h2>
-            
-            <div class="email-wrapper">
-                <div class="copy-tooltip" id="tooltip">Copied!</div>
-                <button class="email-btn" onclick="copyEmail()">
-                    ian <span class="bracket">[at]</span> protonmail <span class="bracket">(dot)</span> com
-                </button>
-            </div>
-        </div>
-
-        <footer>
-            B.Sc. Software Engineering · Local time: <span id="time"></span>
-        </footer>
-
     </div>
 
+    <footer>
+        <div class="footer-content">
+            <div class="degree">B.Sc. Software Engineering</div>
+            <div class="footer-links">
+                GitHub: <a href="https://github.com/ianfigueroa" target="_blank">@ianfigueroa</a>
+                ·
+                email: <a href="#" onclick="copyEmail(); return false;">ian.figueroa6 [at] upr (dot) edu</a>
+            </div>
+            <div class="top-link" onclick="scrollToTop()">
+                <span class="back-to-top">Back to top</span>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // --- 1. Real-time Clock ---
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-            document.getElementById('time').textContent = timeString + " UTC";
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        // --- 2. Copy Email Functionality ---
-        function copyEmail() {
-            const email = "ian@protonmail.com";
-            const tooltip = document.getElementById('tooltip');
-            
-            navigator.clipboard.writeText(email).then(() => {
-                tooltip.classList.add('show');
-                setTimeout(() => {
-                    tooltip.classList.remove('show');
-                }, 2000);
-            });
-        }
-
-        // --- 3. THE FANCIER BACKGROUND ENGINE ---
-        const canvas = document.getElementById('quant-bg');
+        // --- 1. CANDLESTICK BACKGROUND ---
+        const canvas = document.getElementById('candlestick-bg');
         const ctx = canvas.getContext('2d');
         
         let width, height;
-        let lines = [];
-        const gap = 120; // Distance between horizontal lines
+        let rows = [];
         
-        // Colors
-        const lineColor = '#2dd4bf'; // Teal
+        const config = {
+            rowCount: 1,
+            candleWidth: 24, // Much bigger candles
+            gap: 8,
+            speed: 0.3,
+            volatility: 60, // Bigger swings
+            colorUp: '#4ade80',
+            colorDown: '#f87171',
+            opacity: 0.3 // Lower opacity to not clash with text
+        };
         
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            initLines();
+            initRows();
         }
 
-        class QuantLine {
-            constructor(y) {
-                this.y = y;
-                this.points = [];
-                this.speed = 0.5 + Math.random() * 0.5; // vary speed slightly
-                this.amplitude = 15;
-                
-                // Initialize points across the screen
-                let x = 0;
-                // Start with a base value
-                let val = 0;
-                while (x < width + 50) {
-                    // Random Walk Logic (Stock chart style)
-                    // Next point is based on previous point + random change
-                    let change = (Math.random() - 0.5) * 10;
-                    val += change;
-                    
-                    // Clamp the value so lines don't intersect too much
-                    if(val > this.amplitude) val = this.amplitude;
-                    if(val < -this.amplitude) val = -this.amplitude;
-
-                    this.points.push({ x: x, yOffset: val });
-                    x += 5; // Distance between points (resolution)
+        class CandleRow {
+            constructor() {
+                this.y = height / 2;
+                this.candles = [];
+                let lastClose = this.y;
+                for(let x = 0; x < width; x += config.candleWidth + config.gap) {
+                    const candle = new Candle(x, lastClose);
+                    this.candles.push(candle);
+                    lastClose = candle.c;
                 }
             }
-
             update() {
-                // Shift all X values left
-                for (let i = 0; i < this.points.length; i++) {
-                    this.points[i].x -= this.speed;
-                }
-
-                // Remove off-screen points
-                if (this.points[0].x < -10) {
-                    this.points.shift();
-                    
-                    // Generate new point at the end
-                    let lastPoint = this.points[this.points.length - 1];
-                    let change = (Math.random() - 0.5) * 10;
-                    let newVal = lastPoint.yOffset + change;
-                    
-                    // Keep within bounds
-                    if(newVal > this.amplitude) newVal = this.amplitude;
-                    if(newVal < -this.amplitude) newVal = -this.amplitude;
-                    
-                    this.points.push({ 
-                        x: lastPoint.x + 5, 
-                        yOffset: newVal 
-                    });
+                this.candles.forEach(c => c.x -= config.speed);
+                if(this.candles[0].x < -(config.candleWidth + config.gap)) {
+                    this.candles.shift();
+                    let lastCandle = this.candles[this.candles.length - 1];
+                    this.candles.push(new Candle(lastCandle.x + config.candleWidth + config.gap, lastCandle.c));
                 }
             }
+            draw() {
+                this.candles.forEach(c => c.draw());
+            }
+        }
+        
+        class Candle {
+            constructor(x, lastClose) {
+                this.x = x;
+                this.o = lastClose;
+                let change = (Math.random() - 0.49) * config.volatility;
+                this.c = this.o + change;
+                let highLowRange = Math.random() * config.volatility * 1.5;
+                this.h = Math.max(this.o, this.c) + highLowRange * 0.5;
+                this.l = Math.min(this.o, this.c) - highLowRange * 0.5;
+            }
 
-            draw(index, total) {
+            draw() {
+                const color = this.c >= this.o ? config.colorUp : config.colorDown;
+                
+                // Wick (no glow)
+                ctx.strokeStyle = color;
+                ctx.globalAlpha = config.opacity;
+                ctx.lineWidth = 2;
                 ctx.beginPath();
-                
-                // We draw jagged lines (lineTo) not smooth curves (bezier) for financial look
-                ctx.moveTo(this.points[0].x, this.y + this.points[0].yOffset);
-                
-                for (let i = 1; i < this.points.length; i++) {
-                    ctx.lineTo(this.points[i].x, this.y + this.points[i].yOffset);
-                }
-
-                // Opacity logic: Fade out top and bottom lines
-                // Middle lines are brighter
-                let distFromCenter = Math.abs(index - total/2);
-                let opacity = 0.4 - (distFromCenter * 0.08);
-                if(opacity < 0.05) opacity = 0.05;
-
-                ctx.strokeStyle = lineColor;
-                ctx.lineWidth = 1.5; // Thicker lines than before
-                ctx.globalAlpha = opacity;
+                ctx.moveTo(this.x + config.candleWidth / 2, this.l);
+                ctx.lineTo(this.x + config.candleWidth / 2, this.h);
                 ctx.stroke();
-                ctx.globalAlpha = 1.0; // Reset
+
+                // Body (no glow)
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, Math.min(this.o, this.c), config.candleWidth, Math.abs(this.o - this.c));
+                
+                ctx.globalAlpha = 1;
             }
         }
 
-        function initLines() {
-            lines = [];
-            // Calculate how many lines fit
-            let totalLines = Math.floor(height / gap);
-            for (let i = 0; i < totalLines + 2; i++) {
-                lines.push(new QuantLine(i * gap));
-            }
+        function initRows() {
+            rows = [new CandleRow()];
         }
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            lines.forEach((line, index) => {
-                line.update();
-                line.draw(index, lines.length);
+            rows.forEach(row => {
+                row.update();
+                row.draw();
             });
             requestAnimationFrame(animate);
         }
 
+        // --- FADE OUT ON SCROLL (but keep animating) ---
+        window.addEventListener('scroll', () => {
+            let scrollPos = window.scrollY;
+            let fadeStart = 50;
+            let fadeUntil = 400;
+            let opacity = 1;
+
+            if (scrollPos > fadeStart) {
+                opacity = 1 - (scrollPos - fadeStart) / (fadeUntil - fadeStart);
+            }
+            
+            canvas.style.opacity = Math.max(0, opacity);
+        });
+
         window.addEventListener('resize', resize);
         resize();
         animate();
+
+        // --- 2. Copy Email ---
+        function copyEmail() {
+            const email = "ian.figueroa6@upr.edu";
+            navigator.clipboard.writeText(email).then(() => {
+                const msg = document.getElementById('copy-msg');
+                msg.classList.add('visible');
+                setTimeout(() => msg.classList.remove('visible'), 2000);
+            });
+        }
+
+        // --- 3. Scroll to Top ---
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
