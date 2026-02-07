@@ -9,17 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Theme Colors */
             --bg: #010203; 
             --card-bg: rgba(10, 14, 18, 0.85);
             --border: #1e293b;
             --text: #ffffff;
             --text-muted: #94a3b8;
-            
-            /* Accents */
             --accent: #2dd4bf;
             --accent-glow: #2dd4bf; 
-            
             --font-main: 'JetBrains Mono', monospace;
             --font-body: 'IBM Plex Mono', monospace;
         }
@@ -38,7 +34,6 @@
             flex-direction: column;
         }
 
-        /* --- BACKGROUND ENGINE --- */
         canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -64,7 +59,6 @@
             flex: 1;
         }
 
-        /* --- HERO SECTION --- */
         header {
             padding-top: 140px;
             text-align: center;
@@ -85,12 +79,6 @@
             color: #fff;
             text-shadow: none;
             text-align: center;
-        }
-
-        .hero-title-separator { 
-            color: var(--accent); 
-            opacity: 0.8; 
-            padding: 0 15px; 
         }
 
         .bio-text {
@@ -121,7 +109,6 @@
         .contact-link:hover { color: var(--accent); }
         .bracket { color: var(--text-muted); opacity: 0.7; }
         
-        /* Fixed: toast hidden by default, only shown via JS */
         #copy-msg {
             position: fixed; top: 20px; left: 50%;
             transform: translateX(-50%) translateY(-50px);
@@ -138,7 +125,6 @@
             opacity: 1;
         }
 
-        /* --- PROJECTS GRID --- */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -190,7 +176,6 @@
         }
         .pill-wip { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.1); }
 
-        /* Clickable Image */
         .card-preview {
             display: block;
             aspect-ratio: 16 / 9;
@@ -240,7 +225,6 @@
             box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
         }
 
-        /* --- FOOTER --- */
         footer {
             border-top: 1px solid var(--border); padding: 40px 0;
             font-family: var(--font-main); font-size: 13px;
@@ -281,7 +265,6 @@
 
     <div class="container">
         
-        <!-- Hero Section -->
         <header>
             <h1>Ian Figueroa</h1>
             
@@ -303,7 +286,6 @@
             </div>
         </header>
 
-        <!-- Projects Grid -->
         <div class="grid-2">
             
             <!-- Project 1: TapeFlow -->
@@ -364,13 +346,13 @@
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        An order matching engine I'm building in C++20 to learn low-latency systems design. The goal is sub-microsecond matching using lock-free queues and eventually kernel-bypass networking.
+                        A real-time market data engine that connects to Binance Futures via WebSocket, maintains a local order book with proper sequencing, and tracks trade flow metrics — VWAP, book imbalance, and large trade detection. Uses a lock-free SPSC queue to separate network I/O from processing.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #f34b7d;">C++ 20</span>
-                        <span class="tech-tag" style="--tag-color: #9333ea;">Boost.Asio</span>
+                        <span class="tech-tag" style="--tag-color: #9333ea;">Boost.Beast</span>
                         <span class="tech-tag" style="--tag-color: #4ade80;">CMake</span>
-                        <span class="tech-tag" style="--tag-color: #94a3b8;">Linux</span>
+                        <span class="tech-tag" style="--tag-color: #f59e0b;">Binance API</span>
                     </div>
                     <span class="btn-view" style="opacity: 0.5; cursor: default;">Coming Soon</span>
                 </div>
@@ -379,20 +361,20 @@
              <!-- Project 4: Arb-Bot -->
              <div class="card">
                 <div class="card-header">
-                    <span class="card-title">MEV-Arb-Bot</span>
-                    <span class="status-pill pill-wip">research</span>
+                    <span class="card-title">arb-bot</span>
+                    <span class="status-pill pill-wip">in development</span>
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        Exploring triangular arbitrage on EVM chains. Uses Bellman-Ford to find profitable cycles across Uniswap V2 pools and simulates execution in Rust. More of a research project than a production bot.
+                        A triangular arbitrage scanner that monitors live Uniswap V2 pool reserves on Ethereum mainnet. Calculates real-time profitability across WETH/USDC/DAI paths including gas costs, and logs opportunities when net profit is positive. Scan-only — no execution.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #dea584;">Rust</span>
-                        <span class="tech-tag" style="--tag-color: #6366f1;">Solidity</span>
-                        <span class="tech-tag" style="--tag-color: #3b82f6;">Ethers.rs</span>
-                        <span class="tech-tag" style="--tag-color: #fca5a5;">Graph Theory</span>
+                        <span class="tech-tag" style="--tag-color: #3b82f6;">ethers-rs</span>
+                        <span class="tech-tag" style="--tag-color: #a855f7;">tokio</span>
+                        <span class="tech-tag" style="--tag-color: #4ade80;">Uniswap V2</span>
                     </div>
-                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Research Phase</span>
+                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Coming Soon</span>
                 </div>
             </div>
         </div>
@@ -414,7 +396,6 @@
     </footer>
 
     <script>
-        // --- 1. CANDLESTICK BACKGROUND ---
         const canvas = document.getElementById('candlestick-bg');
         const ctx = canvas.getContext('2d');
         
@@ -521,7 +502,6 @@
         resize();
         animate();
 
-        // --- 2. Copy Email ---
         function copyEmail() {
             const email = "ian.figueroa6@upr.edu";
             navigator.clipboard.writeText(email).then(() => {
@@ -531,7 +511,6 @@
             });
         }
 
-        // --- 3. Scroll to Top ---
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
