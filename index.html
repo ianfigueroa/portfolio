@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ian Figueroa | Quant Engineer</title>
+    <title>Ian Figueroa | Software Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
             --text: #ffffff;
             --text-muted: #94a3b8;
             
-            /* Quant Accents */
+            /* Accents */
             --accent: #2dd4bf;
             --accent-glow: #2dd4bf; 
             
@@ -120,6 +120,8 @@
         }
         .contact-link:hover { color: var(--accent); }
         .bracket { color: var(--text-muted); opacity: 0.7; }
+        
+        /* Fixed: toast hidden by default, only shown via JS */
         #copy-msg {
             position: fixed; top: 20px; left: 50%;
             transform: translateX(-50%) translateY(-50px);
@@ -128,8 +130,13 @@
             font-weight: 700; font-family: var(--font-main);
             font-size: 12px; transition: transform 0.3s ease;
             z-index: 100; box-shadow: 0 0 20px var(--accent);
+            opacity: 0;
+            pointer-events: none;
         }
-        #copy-msg.visible { transform: translateX(-50%) translateY(0); }
+        #copy-msg.visible { 
+            transform: translateX(-50%) translateY(0); 
+            opacity: 1;
+        }
 
         /* --- PROJECTS GRID --- */
         .grid-2 {
@@ -276,13 +283,10 @@
         
         <!-- Hero Section -->
         <header>
-            <h1>
-                Software Engineer <span class="hero-title-separator">|</span> Quant Dev
-            </h1>
+            <h1>Ian Figueroa</h1>
             
             <p class="bio-text">
-                    Specializing in <strong>Market Microstructure</strong> and <strong>Low-Latency Systems</strong>, I build high-performance trading infrastructure and simulation-ready arbitrage tools using C++20 and Python.
-
+                Software engineering student at UPRM. I build real-time systems and full-stack apps, with a growing interest in quantitative finance and low-latency infrastructure. Most of my time goes into figuring out how to move and visualize data fast.
             </p>
             
             <div class="contact-block">
@@ -315,7 +319,7 @@
                 </a>
                 <div class="card-body">
                     <p class="card-desc">
-                        A low-latency cryptocurrency market analysis terminal processing 500+ trades per second. Implements mutable ring buffers for O(1) state updates, a Canvas-based rendering engine for footprint and order-flow visualization, and real-time algorithmic detection of whales, velocity surges, spoofing, and liquidity imbalances within a professional dockable trading workspace.
+                        A crypto market data terminal that streams and visualizes trades in real time. Handles 500+ trades/sec using ring buffers for fast state updates and a Canvas renderer for the order book, trade tape, and footprint charts. Also detects whale activity, spoofing patterns, and liquidity imbalances as they happen.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #61dafb;">React</span>
@@ -330,17 +334,17 @@
             <!-- Project 2: Stock Analysis -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">Quant Dashboard</span>
+                    <span class="card-title">Stock Analysis Dashboard</span>
                     <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" style="text-decoration: none;">
                         <span class="status-pill pill-open">open source</span>
                     </a>
                 </div>
                 <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="card-preview">
-                    <img src="images/stock-analysis.jpg" alt="Quant Dashboard">
+                    <img src="images/stock-analysis.jpg" alt="Stock Analysis Dashboard">
                 </a>
                 <div class="card-body">
                     <p class="card-desc">
-                        Interactive financial dashboard featuring a Black-Scholes pricing engine with full Greek sensitivities, price/volatility heatmaps, and P&L visualization. Includes a multi-factor automated equity analysis system combining valuation, fundamentals, technical indicators, and risk metrics
+                        An interactive dashboard for options pricing and equity analysis. Features a Black-Scholes calculator with full Greeks, price/volatility heatmaps, and P&L charts. Also runs automated stock screening across valuation, fundamentals, technicals, and risk metrics.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
@@ -360,7 +364,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        High-performance order matching engine written in C++20. Designed for sub-microsecond latency using lock-free data structures (SPSC Queues) and kernel-bypass networking principles.
+                        An order matching engine I'm building in C++20 to learn low-latency systems design. The goal is sub-microsecond matching using lock-free queues and eventually kernel-bypass networking.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #f34b7d;">C++ 20</span>
@@ -368,7 +372,7 @@
                         <span class="tech-tag" style="--tag-color: #4ade80;">CMake</span>
                         <span class="tech-tag" style="--tag-color: #94a3b8;">Linux</span>
                     </div>
-                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Architecture Coming Soon</span>
+                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Coming Soon</span>
                 </div>
             </div>
 
@@ -380,7 +384,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        Triangular arbitrage searcher for EVM chains. Uses graph theory (Bellman-Ford) to identify liquidity cycles across Uniswap V2 pools and simulates execution via Rust.
+                        Exploring triangular arbitrage on EVM chains. Uses Bellman-Ford to find profitable cycles across Uniswap V2 pools and simulates execution in Rust. More of a research project than a production bot.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #dea584;">Rust</span>
@@ -397,7 +401,7 @@
 
     <footer>
         <div class="footer-content">
-            <div class="degree">B.Sc. Software Engineering</div>
+            <div class="degree">B.Sc. Software Engineering @ UPRM</div>
             <div class="footer-links">
                 GitHub: <a href="https://github.com/ianfigueroa" target="_blank">@ianfigueroa</a>
                 ·
@@ -419,13 +423,13 @@
         
         const config = {
             rowCount: 1,
-            candleWidth: 24, // Much bigger candles
+            candleWidth: 24,
             gap: 8,
             speed: 0.3,
-            volatility: 60, // Bigger swings
+            volatility: 60,
             colorUp: '#4ade80',
             colorDown: '#f87171',
-            opacity: 0.3 // Lower opacity to not clash with text
+            opacity: 0.3
         };
         
         function resize() {
@@ -472,7 +476,6 @@
             draw() {
                 const color = this.c >= this.o ? config.colorUp : config.colorDown;
                 
-                // Wick (no glow)
                 ctx.strokeStyle = color;
                 ctx.globalAlpha = config.opacity;
                 ctx.lineWidth = 2;
@@ -481,7 +484,6 @@
                 ctx.lineTo(this.x + config.candleWidth / 2, this.h);
                 ctx.stroke();
 
-                // Body (no glow)
                 ctx.fillStyle = color;
                 ctx.fillRect(this.x, Math.min(this.o, this.c), config.candleWidth, Math.abs(this.o - this.c));
                 
@@ -502,7 +504,6 @@
             requestAnimationFrame(animate);
         }
 
-        // --- FADE OUT ON SCROLL (but keep animating) ---
         window.addEventListener('scroll', () => {
             let scrollPos = window.scrollY;
             let fadeStart = 50;
