@@ -175,6 +175,7 @@
             box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
         }
         .pill-wip { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.1); }
+        .pill-closed { border-color: #f59e0b; color: #f59e0b; background: rgba(245, 158, 11, 0.1); cursor: default; }
 
         .card-preview {
             display: block;
@@ -223,6 +224,15 @@
         .btn-view:hover { 
             background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700;
             box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+        }
+        .btn-inquire {
+            cursor: pointer;
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+        .btn-inquire:hover {
+            background: #f59e0b; border-color: #f59e0b; color: #000; font-weight: 700;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
         }
 
         footer {
@@ -313,7 +323,32 @@
                 </div>
             </div>
 
-            <!-- Project 2: Stock Analysis -->
+            <!-- Project 2: Forex ML -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Forex ML System</span>
+                    <span class="status-pill pill-closed">closed source</span>
+                </div>
+                <div class="card-preview">
+                    <img src="images/forex-ml.png" alt="Forex ML Backtest Results">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">
+                        An end-to-end ML pipeline for predicting GBP/USD trend reversals. Trains a 4-model weighted ensemble (XGBoost, LightGBM, CatBoost, Random Forest) on 10 years of 1-minute OHLC data (5.2M+ candles). Distills 142 technical indicators into 38 binary trading signals via feature engineering and applies SMOTE to rebalance a 6:1 class imbalance. Backtested with realistic spread, slippage, and commission modeling — 60.7% win rate, 1.6 profit factor, +18.3% return, ~1.4 Sharpe over 318 trades.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
+                        <span class="tech-tag" style="--tag-color: #3b82f6;">XGBoost</span>
+                        <span class="tech-tag" style="--tag-color: #f97316;">LightGBM</span>
+                        <span class="tech-tag" style="--tag-color: #ef4444;">CatBoost</span>
+                        <span class="tech-tag" style="--tag-color: #10b981;">Scikit-learn</span>
+                        <span class="tech-tag" style="--tag-color: #1f6fbf;">Pandas</span>
+                    </div>
+                    <a href="mailto:ian.figueroa6@upr.edu?subject=Forex%20ML%20System%20—%20Details%20Request" class="btn-view btn-inquire">✉ Inquire for Details</a>
+                </div>
+            </div>
+
+            <!-- Project 3: Stock Analysis -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">Stock Analysis Dashboard</span>
@@ -338,7 +373,7 @@
                 </div>
             </div>
 
-            <!-- Project 3: Titan -->
+            <!-- Project 4: Titan -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">titan.cpp</span>
@@ -358,7 +393,7 @@
                 </div>
             </div>
 
-             <!-- Project 4: Arb-Bot -->
+             <!-- Project 5: Arb-Bot -->
              <div class="card">
                 <div class="card-header">
                     <span class="card-title">arb-bot</span>
