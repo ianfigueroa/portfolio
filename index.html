@@ -110,15 +110,19 @@
         .bracket { color: var(--text-muted); opacity: 0.7; }
         
         #copy-msg {
-            position: fixed; top: 20px; left: 50%;
-            transform: translateX(-50%) translateY(-50px);
-            background: var(--accent); color: #000;
-            padding: 8px 16px; border-radius: 4px;
-            font-weight: 700; font-family: var(--font-main);
-            font-size: 12px; transition: transform 0.3s ease;
-            z-index: 100; box-shadow: 0 0 20px var(--accent);
+            position: fixed; bottom: 24px; left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(15, 19, 24, 0.95);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 20px; border-radius: 6px;
+            font-weight: 500; font-family: var(--font-body);
+            font-size: 13px;
+            transition: all 0.25s ease;
+            z-index: 100;
             opacity: 0;
             pointer-events: none;
+            backdrop-filter: blur(12px);
         }
         #copy-msg.visible { 
             transform: translateX(-50%) translateY(0); 
@@ -268,7 +272,7 @@
 </head>
 <body>
 
-    <div id="copy-msg">Copied to clipboard!</div>
+    <div id="copy-msg">ian.figueroa6@upr.edu → clipboard</div>
     
     <canvas id="candlestick-bg"></canvas>
     <div class="vignette"></div>
@@ -344,7 +348,7 @@
                         <span class="tech-tag" style="--tag-color: #10b981;">Scikit-learn</span>
                         <span class="tech-tag" style="--tag-color: #1f6fbf;">Pandas</span>
                     </div>
-                    <a href="mailto:ian.figueroa6@upr.edu?subject=Forex%20ML%20System%20—%20Details%20Request" class="btn-view btn-inquire">Closed source · details, media & demo on request</a>
+                    <span onclick="copyEmail()" class="btn-view btn-inquire" style="cursor:pointer;">Closed source · details, media & demo on request</span>
                 </div>
             </div>
 
@@ -430,7 +434,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         const canvas = document.getElementById('candlestick-bg');
         const ctx = canvas.getContext('2d');
         
@@ -542,13 +546,4 @@
             navigator.clipboard.writeText(email).then(() => {
                 const msg = document.getElementById('copy-msg');
                 msg.classList.add('visible');
-                setTimeout(() => msg.classList.remove('visible'), 2000);
-            });
-        }
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
-</body>
-</html>
+                setTimeout((
