@@ -110,13 +110,17 @@
         .bracket { color: var(--text-muted); opacity: 0.7; }
         
         #copy-msg {
-            position: fixed; bottom: 24px; left: 50%;
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
             transform: translateX(-50%) translateY(20px);
             background: rgba(15, 19, 24, 0.95);
             border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 10px 20px; border-radius: 6px;
-            font-weight: 500; font-family: var(--font-body);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-family: var(--font-body);
             font-size: 13px;
             transition: all 0.25s ease;
             z-index: 100;
@@ -272,7 +276,7 @@
 </head>
 <body>
 
-    <div id="copy-msg">ian.figueroa6@upr.edu → clipboard</div>
+    <div id="copy-msg">ian.figueroa6@upr.edu &#8594; clipboard</div>
     
     <canvas id="candlestick-bg"></canvas>
     <div class="vignette"></div>
@@ -348,7 +352,7 @@
                         <span class="tech-tag" style="--tag-color: #10b981;">Scikit-learn</span>
                         <span class="tech-tag" style="--tag-color: #1f6fbf;">Pandas</span>
                     </div>
-                    <span onclick="copyEmail()" class="btn-view btn-inquire" style="cursor:pointer;">Closed source · details, media & demo on request</span>
+                    <span onclick="copyEmail()" class="btn-view btn-inquire">Closed source · details, media & demo on request</span>
                 </div>
             </div>
 
@@ -434,7 +438,7 @@
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         const canvas = document.getElementById('candlestick-bg');
         const ctx = canvas.getContext('2d');
         
@@ -463,7 +467,7 @@
                 this.y = height / 2;
                 this.candles = [];
                 let lastClose = this.y;
-                for(let x = 0; x < width; x += config.candleWidth + config.gap) {
+                for (let x = 0; x < width; x += config.candleWidth + config.gap) {
                     const candle = new Candle(x, lastClose);
                     this.candles.push(candle);
                     lastClose = candle.c;
@@ -471,7 +475,7 @@
             }
             update() {
                 this.candles.forEach(c => c.x -= config.speed);
-                if(this.candles[0].x < -(config.candleWidth + config.gap)) {
+                if (this.candles[0].x < -(config.candleWidth + config.gap)) {
                     this.candles.shift();
                     let lastCandle = this.candles[this.candles.length - 1];
                     this.candles.push(new Candle(lastCandle.x + config.candleWidth + config.gap, lastCandle.c));
@@ -524,7 +528,7 @@
             requestAnimationFrame(animate);
         }
 
-        window.addEventListener('scroll', () => {
+        window.addEventListener('scroll', function() {
             let scrollPos = window.scrollY;
             let fadeStart = 50;
             let fadeUntil = 400;
@@ -542,8 +546,17 @@
         animate();
 
         function copyEmail() {
-            const email = "ian.figueroa6@upr.edu";
-            navigator.clipboard.writeText(email).then(() => {
-                const msg = document.getElementById('copy-msg');
+            var email = "ian.figueroa6@upr.edu";
+            navigator.clipboard.writeText(email).then(function() {
+                var msg = document.getElementById('copy-msg');
                 msg.classList.add('visible');
-                setTimeout((
+                setTimeout(function() { msg.classList.remove('visible'); }, 2000);
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
