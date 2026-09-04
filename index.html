@@ -287,7 +287,7 @@
             <h1>Ian Figueroa</h1>
             
             <p class="bio-text">
-                Software engineering student at UPRM. I build real-time systems and full-stack apps, with a growing interest in quantitative finance and low-latency infrastructure. Most of my time goes into figuring out how to move and visualize data fast.
+                Software engineering student at UPRM. I build low-latency market data systems in C++ and Rust, and I do quant and ML research the honest way, with purged validation and cost-aware backtests that are allowed to say no. Every number on this page reproduces from the linked repo.
             </p>
             
             <div class="contact-block">
@@ -306,7 +306,29 @@
 
         <div class="grid-2">
             
-            <!-- Project 1: TapeFlow -->
+            <!-- Titan -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Titan</span>
+                    <a href="https://github.com/ianfigueroa/Titan" target="_blank" style="text-decoration: none;">
+                        <span class="status-pill pill-open">open source</span>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">
+                        A C++20 market data engine for Binance Futures. Keeps a local order book in sync with sequence-gap detection and REST snapshot resync, computes VWAP, spread, imbalance and whale alerts, and streams them to any client over WebSocket. Network and engine threads talk through a lock-free SPSC queue that hands off about 220M events a second at roughly 4 ns each. 140 tests.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag" style="--tag-color: #f34b7d;">C++ 20</span>
+                        <span class="tech-tag" style="--tag-color: #9333ea;">Boost.Beast</span>
+                        <span class="tech-tag" style="--tag-color: #4ade80;">Lock-free</span>
+                        <span class="tech-tag" style="--tag-color: #a8b9cc;">WebSockets</span>
+                    </div>
+                    <a href="https://github.com/ianfigueroa/Titan" target="_blank" class="btn-view">View Source on GitHub</a>
+                </div>
+            </div>
+
+            <!-- TapeFlow -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">TapeFlow</span>
@@ -319,105 +341,125 @@
                 </a>
                 <div class="card-body">
                     <p class="card-desc">
-                        A crypto market data terminal that streams and visualizes trades in real time. Handles 500+ trades/sec using ring buffers for fast state updates and a Canvas renderer for the order book, trade tape, and footprint charts. Also detects whale activity, spoofing patterns, and liquidity imbalances as they happen.
+                        A trading terminal for reading order flow: tape, footprint charts, DOM ladder, CVD, volume profile, open interest and liquidations, with whale, spoof, wall and velocity detection and paper trading with real risk limits. Runs on live Binance data or on a local C++ matching engine (price-time priority book, over 2M orders a second in a mixed workload) behind the same adapter, with a hand-written RFC 6455 WebSocket server.
                     </p>
                     <div class="tech-stack">
+                        <span class="tech-tag" style="--tag-color: #f34b7d;">C++ 20</span>
                         <span class="tech-tag" style="--tag-color: #61dafb;">React</span>
                         <span class="tech-tag" style="--tag-color: #3178c6;">TypeScript</span>
                         <span class="tech-tag" style="--tag-color: #a8b9cc;">WebSockets</span>
-                        <span class="tech-tag" style="--tag-color: #f59e0b;">Vite</span>
                     </div>
                     <a href="https://github.com/ianfigueroa/TapeFlow" target="_blank" class="btn-view">View Source on GitHub</a>
                 </div>
             </div>
 
-            <!-- Project 2: Forex ML -->
+            <!-- Options Risk Engine -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">Forex ML System</span>
-                    <span class="status-pill pill-closed">closed source</span>
-                </div>
-                <div class="card-preview">
-                    <img src="images/ml_forex.png" alt="Forex ML Backtest Results">
-                </div>
-                <div class="card-body">
-                    <p class="card-desc">
-                        An end-to-end ML pipeline for predicting GBP/USD trend reversals. Trains a 4-model weighted ensemble (XGBoost, LightGBM, CatBoost, Random Forest) on 10 years of 1-minute OHLC data (5.2M+ candles). Distills 142 technical indicators into 38 binary trading signals via feature engineering and applies SMOTE to rebalance a 6:1 class imbalance. Backtested with realistic spread, slippage, and commission modeling — 60.7% win rate, 1.6 profit factor, +18.3% return, ~1.4 Sharpe over 318 trades.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
-                        <span class="tech-tag" style="--tag-color: #3b82f6;">XGBoost</span>
-                        <span class="tech-tag" style="--tag-color: #f97316;">LightGBM</span>
-                        <span class="tech-tag" style="--tag-color: #ef4444;">CatBoost</span>
-                        <span class="tech-tag" style="--tag-color: #10b981;">Scikit-learn</span>
-                        <span class="tech-tag" style="--tag-color: #1f6fbf;">Pandas</span>
-                    </div>
-                    <span onclick="copyEmail()" class="btn-view btn-inquire">Closed source · details, media & demo on request</span>
-                </div>
-            </div>
-
-            <!-- Project 3: Stock Analysis -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Stock Analysis Dashboard</span>
-                    <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" style="text-decoration: none;">
+                    <span class="card-title">Options Risk Engine</span>
+                    <a href="https://github.com/ianfigueroa/options-risk-engine" target="_blank" style="text-decoration: none;">
                         <span class="status-pill pill-open">open source</span>
                     </a>
                 </div>
-                <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="card-preview">
-                    <img src="images/stock-analysis.jpg" alt="Stock Analysis Dashboard">
-                </a>
                 <div class="card-body">
                     <p class="card-desc">
-                        An interactive dashboard for options pricing and equity analysis. Features a Black-Scholes calculator with full Greeks, price/volatility heatmaps, and P&L charts. Also runs automated stock screening across valuation, fundamentals, technicals, and risk metrics.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
-                        <span class="tech-tag" style="--tag-color: #ff4b4b;">Streamlit</span>
-                        <span class="tech-tag" style="--tag-color: #1f6fbf;">Pandas</span>
-                        <span class="tech-tag" style="--tag-color: #8865c6;">Black-Scholes</span>
-                    </div>
-                    <a href="https://github.com/ianfigueroa/Stock-Analysis" target="_blank" class="btn-view">View Source on GitHub</a>
-                </div>
-            </div>
-
-            <!-- Project 4: Titan -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">titan.cpp</span>
-                    <span class="status-pill pill-wip">in development</span>
-                </div>
-                <div class="card-body">
-                    <p class="card-desc">
-                        A real-time market data engine that connects to Binance Futures via WebSocket, maintains a local order book with proper sequencing, and tracks trade flow metrics — VWAP, book imbalance, and large trade detection. Uses a lock-free SPSC queue to separate network I/O from processing.
+                        An options analytics desk. C++20 pricing core (10K Black-Scholes prices in about 1.4 ms on one thread) with binomial and Monte Carlo pricers cross-checked against the closed form, full Greeks, implied vol, vol surfaces, portfolio stress and delta hedging with transaction costs. Exposed through pybind11, a 15-endpoint FastAPI service and a React dashboard.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #f34b7d;">C++ 20</span>
-                        <span class="tech-tag" style="--tag-color: #9333ea;">Boost.Beast</span>
-                        <span class="tech-tag" style="--tag-color: #4ade80;">CMake</span>
-                        <span class="tech-tag" style="--tag-color: #f59e0b;">Binance API</span>
+                        <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
+                        <span class="tech-tag" style="--tag-color: #009688;">FastAPI</span>
+                        <span class="tech-tag" style="--tag-color: #61dafb;">React</span>
                     </div>
-                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Coming Soon</span>
+                    <a href="https://github.com/ianfigueroa/options-risk-engine" target="_blank" class="btn-view">View Source on GitHub</a>
                 </div>
             </div>
 
-             <!-- Project 5: Arb-Bot -->
-             <div class="card">
+            <!-- FinLLM -->
+            <div class="card">
                 <div class="card-header">
-                    <span class="card-title">arb-bot</span>
-                    <span class="status-pill pill-wip">in development</span>
+                    <span class="card-title">FinLLM</span>
+                    <a href="https://github.com/ianfigueroa/FinLLM" target="_blank" style="text-decoration: none;">
+                        <span class="status-pill pill-open">open source</span>
+                    </a>
                 </div>
                 <div class="card-body">
                     <p class="card-desc">
-                        A triangular arbitrage scanner that monitors live Uniswap V2 pool reserves on Ethereum mainnet. Calculates real-time profitability across WETH/USDC/DAI paths including gas costs, and logs opportunities when net profit is positive. Scan-only — no execution.
+                        Question answering over SEC 10-Ks that always points at the paragraph it came from. Hybrid dense + BM25 retrieval, section-aware reranking, citation checking and three-statement parsing, all local by default. The eval harness (34 labeled questions across 4 real filings) holds 100% citation validity and caught a reranking change that hurt numeric lookups before it shipped.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
+                        <span class="tech-tag" style="--tag-color: #10b981;">RAG</span>
+                        <span class="tech-tag" style="--tag-color: #f59e0b;">BM25</span>
+                        <span class="tech-tag" style="--tag-color: #009688;">FastAPI</span>
+                    </div>
+                    <a href="https://github.com/ianfigueroa/FinLLM" target="_blank" class="btn-view">View Source on GitHub</a>
+                </div>
+            </div>
+
+            <!-- DeepLOB-Research -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">DeepLOB-Research</span>
+                    <a href="https://github.com/ianfigueroa/DeepLOB-Research" target="_blank" style="text-decoration: none;">
+                        <span class="status-pill pill-open">open source</span>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">
+                        Does a deep limit-order-book model make money after costs? Eight classifiers (logistic through DeepLOB, TCN, transformer, TLOB and S4D) in PyTorch, scored with purged walk-forward and combinatorial purged CV and an event-driven backtest with fees, slippage and latency. On my data none of the 24 runs kept positive net PnL, and the report says so. 130 tests, paper draft included.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
+                        <span class="tech-tag" style="--tag-color: #ee4c2c;">PyTorch</span>
+                        <span class="tech-tag" style="--tag-color: #3b82f6;">XGBoost</span>
+                        <span class="tech-tag" style="--tag-color: #a855f7;">Quant research</span>
+                    </div>
+                    <a href="https://github.com/ianfigueroa/DeepLOB-Research" target="_blank" class="btn-view">View Source on GitHub</a>
+                </div>
+            </div>
+
+            <!-- Reasoning Model -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Reasoning Model</span>
+                    <a href="https://github.com/ianfigueroa/reasoning-model" target="_blank" style="text-decoration: none;">
+                        <span class="status-pill pill-open">open source</span>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">
+                        Teaching a 1.5B model to think on an 8 GB GPU: QLoRA fine-tuning on s1K reasoning traces, s1-style budget forcing, self-consistency and tool-integrated reasoning at inference. Found and fixed an eval bug that hid 40 points of the baseline, showed the s1 effect does not reproduce at this size, and got 87% on GSM8K by picking the right base model and prompt.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag" style="--tag-color: #ffde57;">Python</span>
+                        <span class="tech-tag" style="--tag-color: #ee4c2c;">PyTorch</span>
+                        <span class="tech-tag" style="--tag-color: #f97316;">PEFT</span>
+                        <span class="tech-tag" style="--tag-color: #8865c6;">GSM8K</span>
+                    </div>
+                    <a href="https://github.com/ianfigueroa/reasoning-model" target="_blank" class="btn-view">View Source on GitHub</a>
+                </div>
+            </div>
+
+            <!-- Arb-Scanner -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Arb-Scanner</span>
+                    <a href="https://github.com/ianfigueroa/Arb-Scanner" target="_blank" style="text-decoration: none;">
+                        <span class="status-pill pill-open">open source</span>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">
+                        A read-only DEX arbitrage scanner in async Rust. Watches 20+ pools across Ethereum, Arbitrum, Base and Polygon, checks 3-hop paths every block with exact Uniswap V2 math, a marginal-price V3 estimate and on-chain Curve quotes, nets out gas, and logs anything positive to SQLite with crash recovery. Scan only, no execution. 90 tests.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag" style="--tag-color: #dea584;">Rust</span>
-                        <span class="tech-tag" style="--tag-color: #3b82f6;">ethers-rs</span>
                         <span class="tech-tag" style="--tag-color: #a855f7;">tokio</span>
-                        <span class="tech-tag" style="--tag-color: #4ade80;">Uniswap V2</span>
+                        <span class="tech-tag" style="--tag-color: #3b82f6;">ethers-rs</span>
+                        <span class="tech-tag" style="--tag-color: #4ade80;">SQLite</span>
                     </div>
-                    <span class="btn-view" style="opacity: 0.5; cursor: default;">Coming Soon</span>
+                    <a href="https://github.com/ianfigueroa/Arb-Scanner" target="_blank" class="btn-view">View Source on GitHub</a>
                 </div>
             </div>
         </div>
